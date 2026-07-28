@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="创作者工作台">
+<meta name="theme-color" content="#f5f0e8">
+<title>创作者工作台 · 温柔森系</title>
+<style>
+:root{
+  --bg-page:#f5f0e8;
+  --bg-card:#fffdf9;
+  --ink:#5a5246;
+  --ink-soft:#8a8074;
+  --ink-faint:#b8ad9f;
+  --line:#e8dfd3;
+  --line-soft:#f0e8dc;
+  --accent:#9bab8e;
+  --accent-soft:#c2cdb4;
+  --danger:#c9a09a;
+  --radius:14px;
+  --radius-sm:9px;
+  --shadow:0 2px 12px rgba(120,105,85,0.06);
+  /* 板块底色 */
+  --c-plan:#faf6ee;
+  --c-makeup:#f0e6d6;
+  --c-inspo:#f5e4e0;
+  --c-craft:#e0ebe2;
+  --c-ledger:#e8dfc8;
+  --c-buy:#ece6da;
+  --c-memo:#f3ede3;
+  /* 布局 */
+  --sidebar-w:58px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{
+  background:var(--bg-page);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;
+  height:100%;overflow:hidden;
+}
+input,textarea,select,button{font-family:inherit;font-size:inherit;color:inherit;border:none;outline:none;background:none}
+textarea{resize:none;line-height:1.6}
+button{cursor:pointer}
+img{max-width:100%;display:block}
+
+/* ===== 整体布局 ===== */
+.app-shell{display:flex;height:100%;max-width:480px;margin:0 auto;position:relative}
+
+/* ===== 左侧导航 ===== */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  background:rgba(245,240,232,0.96);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-right:1px solid var(--line-soft);
+  display:flex;flex-direction:column;align-items:center;
+  padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);
+  overflow-y:auto;z-index:10;
+  -webkit-overflow-scrolling:touch;
+}
+.side-brand{
+  padding:10px 0 6px;text-align:center;border-bottom:1px solid var(--line-soft);
+  margin-bottom:4px;width:100%;
+}
+.side-brand .sb-icon{font-size:20px;display:block}
+.side-brand .sb-date{font-size:8px;color:var(--ink-faint);margin-top:2px}
+.side-nav{flex:1;display:flex;flex-direction:column;gap:3px;width:100%;padding:0 5px}
+.side-nav .sn{
+  display:flex;flex-direction:column;align-items:center;gap:1px;
+  padding:7px 3px;border-radius:10px;
+  font-size:9px;color:var(--ink-faint);text-decoration:none;
+  cursor:pointer;transition:all 0.18s;position:relative;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.side-nav .sn .sni{font-size:18px;line-height:1.2}
+.side-nav .sn .snl{text-align:center;line-height:1.3;max-width:48px;word-break:keep-all}
+.side-nav .sn:hover{background:rgba(155,171,142,0.08)}
+.side-nav .sn.active{
+  background:rgba(155,171,142,0.18);color:var(--accent);font-weight:600;
+}
+.side-nav .sn.active::before{
+  content:'';position:absolute;left:-5px;top:50%;transform:translateY(-50%);
+  width:3px;height:16px;border-radius:2px;background:var(--accent);
+}
+.side-footer{
+  padding:6px 0 8px;display:flex;flex-direction:column;gap:5px;align-items:center;
+  border-top:1px solid var(--line-soft);margin-top:4px;width:100%;
+}
+.side-footer button{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--bg-card);border:1px solid var(--line-soft);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:var(--ink-soft);
+}
+.side-footer button:active{transform:scale(0.92)}
+
+/* ===== 右侧主内容 ===== */
+.main-area{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative}
+
+/* 顶部条 */
+.topbar{
+  position:sticky;top:0;z-index:5;
+  background:rgba(245,240,232,0.88);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  padding:env(safe-area-inset-top,0) 10px 8px;border-bottom:1px solid var(--line-soft);
+}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;padding-top:6px}
+.topbar h1{font-size:16px;font-weight:600;letter-spacing:0.3px;color:var(--ink);display:flex;align-items:center;gap:5px}
+.topbar h1 .leaf{font-size:15px}
+.topbar .tog{font-size:11px;color:var(--ink-soft);cursor:pointer;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,0.5)}
+
+/* 面板容器 */
+.panel{display:none;padding:10px;padding-bottom:20px}
+.panel.active{display:block}
+.panel .panel-head{padding:6px 4px 10px;display:flex;align-items:center;gap:8px}
+.panel .panel-head .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 3px rgba(255,255,255,0.5)}
+.panel .panel-head h2{font-size:15px;font-weight:600;letter-spacing:0.3px}
+.panel .panel-head .tag{font-size:10px;color:var(--ink-faint);margin-left:auto;letter-spacing:0.5px}
+
+/* 子模块 */
+.sub{margin:8px 0;padding:10px 11px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.55)}
+.sub-title{font-size:12.5px;font-weight:600;margin-bottom:7px;display:flex;align-items:center;gap:5px;color:var(--ink)}
+.sub-title .ico{font-size:12px;opacity:0.8}
+.sub-title .add{margin-left:auto;font-size:10px;color:var(--accent);cursor:pointer;padding:2px 8px;border-radius:10px;background:rgba(155,171,142,0.12);font-weight:500}
+
+/* 板块底色 */
+.pnl-plan{background:var(--c-plan)}
+.pnl-plan .dot{background:#d4a373}
+.pnl-makeup{background:var(--c-makeup)}
+.pnl-makeup .dot{background:#c4956a}
+.pnl-inspo{background:var(--c-inspo)}
+.pnl-inspo .dot{background:#d4a09a}
+.pnl-craft{background:var(--c-craft)}
+.pnl-craft .dot{background:#7fa386}
+.pnl-ledger{background:var(--c-ledger)}
+.pnl-ledger .dot{background:#a89368}
+.pnl-buy{background:var(--c-buy)}
+.pnl-buy .dot{background:#a89878}
+.pnl-memo{background:var(--c-memo)}
+.pnl-memo .dot{background:#b8a890}
+
+/* 输入 */
+.input-row{display:flex;gap:5px;align-items:flex-start;margin-top:7px}
+.input-row textarea,.input-row input{flex:1;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:7px;padding:7px 9px;font-size:12.5px;min-height:34px}
+.input-row textarea{min-height:46px}
+.btn-add{background:var(--accent);color:#fff;padding:6px 12px;border-radius:7px;font-size:11px;font-weight:500;white-space:nowrap;display:flex;align-items:center;gap:3px}
+.btn-add:active{transform:scale(0.96)}
+
+/* 条目卡片 */
+.item{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:8px;padding:9px 10px;margin-top:7px}
+.item .it-head{display:flex;align-items:flex-start;gap:7px}
+.item .it-body{font-size:12.5px;line-height:1.55;color:var(--ink);word-break:break-word;white-space:pre-wrap;flex:1}
+.item .it-meta{font-size:9.5px;color:var(--ink-faint);margin-top:5px;display:flex;gap:7px;flex-wrap:wrap}
+.item .it-actions{display:flex;gap:3px;margin-top:5px}
+.item .it-actions button{font-size:10.5px;color:var(--ink-soft);padding:2px 7px;border-radius:7px;background:rgba(232,223,211,0.4)}
+.item .it-actions .del{color:var(--danger)}
+.item .chk{width:17px;height:17px;border:1.5px solid var(--ink-faint);border-radius:4px;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;background:#fff}
+.item.done .it-body{text-decoration:line-through;color:var(--ink-faint)}
+.item.done .chk{background:var(--accent);border-color:var(--accent)}
+
+/* 相册 */
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:7px}
+.gallery .ph{position:relative;aspect-ratio:1;border-radius:7px;overflow:hidden;background:var(--line-soft);cursor:pointer}
+.gallery .ph img{width:100%;height:100%;object-fit:cover}
+.gallery .ph .del-ph{position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.45);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center}
+.gallery .add-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;border:1.5px dashed var(--line);color:var(--ink-faint);font-size:10px;gap:2px}
+
+/* 筛选 */
+.filter-tabs{display:flex;gap:4px;flex-wrap:wrap;margin:5px 0 2px}
+.filter-tabs span{font-size:10.5px;padding:2px 9px;border-radius:10px;background:rgba(255,255,255,0.5);color:var(--ink-soft);cursor:pointer}
+.filter-tabs span.active{background:var(--accent);color:#fff}
+
+/* 账本 */
+.ledger-row{display:grid;grid-template-columns:55px 1fr 65px;gap:5px;align-items:center;margin-top:5px}
+.ledger-row input{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:6px;padding:5px 7px;font-size:11.5px}
+.ledger-table{margin-top:7px;font-size:11.5px}
+.ledger-table .lr{display:grid;grid-template-columns:50px 1fr 55px 18px;gap:4px;padding:5px 3px;border-bottom:1px solid var(--line-soft);align-items:center}
+.ledger-table .lr .lr-del{color:var(--danger);font-size:12px;text-align:center;cursor:pointer}
+.ledger-sum{margin-top:7px;padding:7px 9px;background:rgba(255,255,255,0.6);border-radius:7px;font-size:11.5px;display:flex;justify-content:space-between}
+.ledger-sum b{color:var(--accent);font-size:13px}
+
+/* 采购 */
+.buy-item{display:flex;align-items:center;gap:7px;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:7px;padding:7px 9px;margin-top:5px;font-size:11.5px}
+.buy-item .b-name{flex:1}
+.buy-item .b-budget{color:var(--ink-soft);font-size:10px}
+.buy-item .b-status{font-size:9.5px;padding:2px 6px;border-radius:8px;cursor:pointer}
+.buy-item .b-status.todo{background:rgba(212,160,154,0.2);color:#b07a74}
+.buy-item .b-status.done{background:rgba(127,163,134,0.2);color:#5e7d65}
+.buy-item .b-del{color:var(--danger);font-size:12px;padding:0 3px}
+
+/* 备忘录 */
+.memo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:7px}
+.memo-card{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:8px;padding:9px;font-size:11.5px;position:relative;min-height:65px}
+.memo-card .mc-text{white-space:pre-wrap;word-break:break-word;line-height:1.5;color:var(--ink)}
+.memo-card .mc-time{font-size:8.5px;color:var(--ink-faint);margin-top:5px}
+.memo-card .mc-del{position:absolute;top:4px;right:5px;color:var(--danger);font-size:11px;opacity:0.6}
+
+/* 通用 */
+.empty{font-size:10.5px;color:var(--ink-faint);text-align:center;padding:12px 0;line-height:1.8}
+#toast{position:fixed;top:50px;left:50%;transform:translateX(-50%) translateY(-20px);background:rgba(90,82,70,0.92);color:#fff;padding:6px 16px;border-radius:18px;font-size:11.5px;z-index:999;opacity:0;transition:all 0.3s;pointer-events:none;max-width:90vw}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#viewer{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:1000;display:none;align-items:center;justify-content:center;padding:30px}
+#viewer.show{display:flex}
+#viewer img{max-width:100%;max-height:100%;border-radius:8px}
+#viewer .close-v{position:absolute;top:20px;right:20px;color:#fff;font-size:28px}
+select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!important;border-radius:6px!important;padding:4px 7px!important;font-size:11.5px!important;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%238a8074' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 7px center!important;padding-right:20px!important}
+.field-label{font-size:10.5px;color:var(--ink-soft);margin:5px 0 2px}
+.multi-input{display:grid;gap:4px;margin-top:5px}
+.multi-input .mi{display:flex;gap:4px;align-items:center}
+.multi-input .mi input,.multi-input .mi textarea{flex:1;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:6px;padding:5px 7px;font-size:11.5px}
+.multi-input .mi textarea{min-height:34px}
+.note-line{font-size:10.5px;color:var(--ink-soft);margin-top:5px;line-height:1.55;padding:5px 7px;background:rgba(255,255,255,0.4);border-radius:6px;border-left:2px solid var(--accent-soft)}
+.month-pick{display:flex;align-items:center;gap:5px;margin:5px 0}
+.month-pick input{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:6px;padding:3px 7px;font-size:11.5px}
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+<!-- ====== 左侧导航 ====== -->
+<nav class="sidebar" id="sidebar">
+  <div class="side-brand">
+    <span class="sb-icon">🌿</span>
+    <div class="sb-date" id="sideDate"></div>
+  </div>
+  <div class="side-nav" id="sideNav">
+    <a class="sn active" data-panel="pnl-plan"><span class="sni">📋</span><span class="snl">规划</span></a>
+    <a class="sn" data-panel="pnl-makeup"><span class="sni">💄</span><span class="snl">约妆</span></a>
+    <a class="sn" data-panel="pnl-inspo"><span class="sni">📱</span><span class="snl">灵感</span></a>
+    <a class="sn" data-panel="pnl-craft"><span class="sni">🌼</span><span class="snl">手作</span></a>
+    <a class="sn" data-panel="pnl-ledger"><span class="sni">💰</span><span class="snl">账本</span></a>
+    <a class="sn" data-panel="pnl-buy"><span class="sni">🛒</span><span class="snl">采购</span></a>
+    <a class="sn" data-panel="pnl-memo"><span class="sni">✨</span><span class="snl">备忘</span></a>
+  </div>
+  <div class="side-footer">
+    <button onclick="exportData()" title="导出备份">⬇</button>
+    <button onclick="document.getElementById('importFile').click()" title="导入">⬆</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+  </div>
+</nav>
+
+<!-- ====== 右侧主内容 ====== -->
+<div class="main-area" id="mainArea">
+
+  <div class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <h1 id="pnlTitle"><span class="leaf">📋</span>每日工作总规划</h1>
+      <span class="tog" id="toggleAll" onclick="toggleAllSubs()">收起</span>
+    </div>
+  </div>
+
+<!-- ===== 板块1 每日工作规划 ===== -->
+<div class="panel pnl-plan active" id="pnl-plan">
+  <div class="panel-head"><span class="dot"></span><h2>每日工作总规划</h2></div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">✓</span>今日 ToDo 清单<span class="add" onclick="showAdd('todo')">+ 新增</span></div>
+    <div id="todoList"></div>
+    <div class="input-row" id="addTodo" style="display:none">
+      <textarea id="todoInput" placeholder="例如：妆教视频拍摄、客户沟通…" rows="2"></textarea>
+      <button class="btn-add" onclick="addItem('todo')">添加</button>
+    </div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">🎬</span>直播计划表<span class="add" onclick="toggleAdd('liveForm')">+ 新增</span></div>
+    <div id="liveList"></div>
+    <div id="liveForm" style="display:none" class="multi-input">
+      <div class="mi"><input id="liveTime" type="datetime-local" style="font-size:11px"></div>
+      <div class="mi"><input id="liveTopic" placeholder="直播主题"></div>
+      <div class="mi"><input id="liveGoal" placeholder="本场带货目标"></div>
+      <div class="mi"><textarea id="liveScript" placeholder="直播脚本要点…" rows="2"></textarea></div>
+      <button class="btn-add" onclick="addLive()">保存</button>
+    </div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">📝</span>每日复盘</div>
+    <div class="field-label">当日问题</div>
+    <textarea id="rp_problem" rows="2" style="width:100%;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:6px;padding:7px;font-size:11.5px" placeholder="遇到的问题…"></textarea>
+    <div class="field-label">今日收获</div>
+    <textarea id="rp_gain" rows="2" style="width:100%;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:6px;padding:7px;font-size:11.5px" placeholder="收获与心得…"></textarea>
+    <div class="field-label">待优化事项</div>
+    <textarea id="rp_opt" rows="2" style="width:100%;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:6px;padding:7px;font-size:11.5px" placeholder="需要改进的地方…"></textarea>
+    <button class="btn-add" style="margin-top:5px" onclick="saveReview()">保存复盘</button>
+    <div id="reviewList"></div>
+  </div>
+</div>
+
+<!-- ===== 板块2 约妆专区 ===== -->
+<div class="panel pnl-makeup" id="pnl-makeup">
+  <div class="panel-head"><span class="dot"></span><h2>线下约妆专属专区</h2><span class="tag">浅奶茶</span></div>
+
+  <div class="filter-tabs" id="bookFilter">
+    <span class="active" data-f="all" onclick="setBookFilter('all',this)">全部</span>
+    <span data-f="pending" onclick="setBookFilter('pending',this)">待确认</span>
+    <span data-f="done" onclick="setBookFilter('done',this)">已完成</span>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">📅</span>约妆预约日程<span class="add" onclick="toggleAdd('bookForm')">+ 新增</span></div>
+    <div id="bookList"></div>
+    <div id="bookForm" style="display:none" class="multi-input">
+      <div class="mi"><input id="bk_date" type="datetime-local" style="font-size:11px"></div>
+      <div class="mi"><input id="bk_place" placeholder="地点"></div>
+      <div class="mi"><input id="bk_style" placeholder="妆容款式"></div>
+      <div class="mi"><textarea id="bk_note" placeholder="客户备注…" rows="2"></textarea></div>
+      <div class="mi">
+        <select id="bk_status"><option value="pending">待确认</option><option value="done">已完成</option></select>
+        <button class="btn-add" onclick="addBook()">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">💄</span>约妆素材收纳<span class="add" onclick="document.getElementById('mkUpload').click()">+ 上传</span></div>
+    <input type="file" id="mkUpload" accept="image/*" multiple style="display:none" onchange="uploadImg(event,'makeup')">
+    <div class="gallery" id="mkGallery"></div>
+    <div class="note-line">客片参考 · 妆容方案 · 报价明细均可上传图片记录</div>
+  </div>
+</div>
+
+<!-- ===== 板块3 自媒体灵感库 ===== -->
+<div class="panel pnl-inspo" id="pnl-inspo">
+  <div class="panel-head"><span class="dot"></span><h2>美妆自媒体灵感库</h2><span class="tag">浅裸粉</span></div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">💡</span>妆教选题灵感<span class="add" onclick="showAdd('topic')">+ 新增</span></div>
+    <div id="topicList"></div>
+    <div class="input-row" id="addTopic" style="display:none">
+      <textarea id="topicInput" placeholder="妆容思路 / 粉丝提问痛点…" rows="2"></textarea>
+      <button class="btn-add" onclick="addItem('topic')">添加</button>
+    </div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">📷</span>妆容参考相册<span class="add" onclick="document.getElementById('inspoUpload').click()">+ 上传</span></div>
+    <input type="file" id="inspoUpload" accept="image/*" multiple style="display:none" onchange="uploadImg(event,'inspo')">
+    <div class="gallery" id="inspoGallery"></div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">🎬</span>短视频脚本 / 标题文案<span class="add" onclick="showAdd('script')">+ 新增</span></div>
+    <div id="scriptList"></div>
+    <div class="input-row" id="addScript" style="display:none">
+      <textarea id="scriptInput" placeholder="脚本草稿 / 标题文案…" rows="3"></textarea>
+      <button class="btn-add" onclick="addItem('script')">添加</button>
+    </div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">🔥</span>爆款思路 & 发布排期<span class="add" onclick="showAdd('hot')">+ 新增</span></div>
+    <div id="hotList"></div>
+    <div class="input-row" id="addHot" style="display:none">
+      <textarea id="hotInput" placeholder="爆款思路 / 发布排期…" rows="2"></textarea>
+      <button class="btn-add" onclick="addItem('hot')">添加</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 板块4 滴胶手作 ===== -->
+<div class="panel pnl-craft" id="pnl-craft">
+  <div class="panel-head"><span class="dot"></span><h2>滴胶手作灵感专区</h2><span class="tag">浅薄荷绿</span></div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">🌸</span>花材搭配灵感<span class="add" onclick="showAdd('flower')">+ 新增</span></div>
+    <div id="flowerList"></div>
+    <div class="input-row" id="addFlower" style="display:none">
+      <textarea id="flowerInput" placeholder="干花 / 小米蜡菊等花材搭配…" rows="2"></textarea>
+      <button class="btn-add" onclick="addItem('flower')">添加</button>
+    </div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">💍</span>戒指系列 & 配色方案<span class="add" onclick="showAdd('ring')">+ 新增</span></div>
+    <div id="ringList"></div>
+    <div class="input-row" id="addRing" style="display:none">
+      <textarea id="ringInput" placeholder="系列名称 / 配色构思…" rows="2"></textarea>
+      <button class="btn-add" onclick="addItem('ring')">添加</button>
+    </div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">🖼</span>成品参考图库<span class="add" onclick="document.getElementById('craftUpload').click()">+ 上传</span></div>
+    <input type="file" id="craftUpload" accept="image/*" multiple style="display:none" onchange="uploadImg(event,'craft')">
+    <div class="gallery" id="craftGallery"></div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">📖</span>花语素材 & 宣传文案<span class="add" onclick="showAdd('copy')">+ 新增</span></div>
+    <div id="copyList"></div>
+    <div class="input-row" id="addCopy" style="display:none">
+      <textarea id="copyInput" placeholder="花语 / 朋友圈 / 直播间文案…" rows="3"></textarea>
+      <button class="btn-add" onclick="addItem('copy')">添加</button>
+    </div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">🏷</span>新品上新 & 库存记录<span class="add" onclick="showAdd('stock')">+ 新增</span></div>
+    <div id="stockList"></div>
+    <div class="input-row" id="addStock" style="display:none">
+      <textarea id="stockInput" placeholder="款式名称 / 库存数量…" rows="2"></textarea>
+      <button class="btn-add" onclick="addItem('stock')">添加</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 板块5 营收账本 ===== -->
+<div class="panel pnl-ledger" id="pnl-ledger">
+  <div class="panel-head"><span class="dot"></span><h2>分类营收账本</h2><span class="tag">浅卡其</span></div>
+
+  <div class="month-pick">
+    <span style="font-size:11px;color:var(--ink-soft)">统计月份</span>
+    <input type="month" id="ledgerMonth" onchange="renderLedger()">
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">💄</span>① 线下约妆收入台账</div>
+    <div class="ledger-row">
+      <input id="ld1_date" type="date"><input id="ld1_note" placeholder="备注"><input id="ld1_amt" type="number" placeholder="金额" inputmode="decimal">
+    </div>
+    <button class="btn-add" style="margin-top:5px;width:100%" onclick="addLedger('makeup')">+ 记一笔</button>
+    <div class="ledger-table" id="ld1_table"></div>
+    <div class="ledger-sum" id="ld1_sum"></div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">📱</span>② 自媒体账号变现收入</div>
+    <div class="ledger-row">
+      <input id="ld2_date" type="date"><input id="ld2_note" placeholder="备注"><input id="ld2_amt" type="number" placeholder="金额" inputmode="decimal">
+    </div>
+    <button class="btn-add" style="margin-top:5px;width:100%" onclick="addLedger('media')">+ 记一笔</button>
+    <div class="ledger-table" id="ld2_table"></div>
+    <div class="ledger-sum" id="ld2_sum"></div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">💍</span>③ 滴胶手作店铺售卖收入</div>
+    <div class="ledger-row">
+      <input id="ld3_date" type="date"><input id="ld3_note" placeholder="备注"><input id="ld3_amt" type="number" placeholder="金额" inputmode="decimal">
+    </div>
+    <button class="btn-add" style="margin-top:5px;width:100%" onclick="addLedger('craft')">+ 记一笔</button>
+    <div class="ledger-table" id="ld3_table"></div>
+    <div class="ledger-sum" id="ld3_sum"></div>
+  </div>
+
+  <div class="ledger-sum" style="background:rgba(155,171,142,0.15);font-size:12px" id="ldTotal"></div>
+</div>
+
+<!-- ===== 板块6 采购清单 ===== -->
+<div class="panel pnl-buy" id="pnl-buy">
+  <div class="panel-head"><span class="dot"></span><h2>采购购买清单</h2><span class="tag">浅燕麦</span></div>
+
+  <div class="filter-tabs" id="buyFilter">
+    <span class="active" data-f="all" onclick="setBuyFilter('all',this)">全部</span>
+    <span data-f="todo" onclick="setBuyFilter('todo',this)">待采购</span>
+    <span data-f="done" onclick="setBuyFilter('done',this)">已采购</span>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">💄</span>美妆耗材</div>
+    <div class="multi-input">
+      <div class="mi"><input id="buy1_name" placeholder="化妆刷 / 彩妆 / 一次性用品…"><input id="buy1_budget" type="number" placeholder="预算" style="max-width:65px" inputmode="decimal"></div>
+    </div>
+    <button class="btn-add" style="margin-top:5px" onclick="addBuy('makeup')">添加</button>
+    <div id="buy1List"></div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">🌼</span>滴胶手作原材料</div>
+    <div class="multi-input">
+      <div class="mi"><input id="buy2_name" placeholder="树脂 / 干花 / 戒托 / 色精 / 模具…"><input id="buy2_budget" type="number" placeholder="预算" style="max-width:65px" inputmode="decimal"></div>
+    </div>
+    <button class="btn-add" style="margin-top:5px" onclick="addBuy('craft')">添加</button>
+    <div id="buy2List"></div>
+  </div>
+
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">🎥</span>直播设备 & 拍摄道具</div>
+    <div class="multi-input">
+      <div class="mi"><input id="buy3_name" placeholder="补光灯 / 支架 / 道具…"><input id="buy3_budget" type="number" placeholder="预算" style="max-width:65px" inputmode="decimal"></div>
+    </div>
+    <button class="btn-add" style="margin-top:5px" onclick="addBuy('equip')">添加</button>
+    <div id="buy3List"></div>
+  </div>
+</div>
+
+<!-- ===== 临时碎灵感备忘录 ===== -->
+<div class="panel pnl-memo" id="pnl-memo">
+  <div class="panel-head"><span class="dot"></span><h2>临时碎灵感备忘录</h2></div>
+  <div class="note-line">随手记录碎片化想法，后续可整理归档到对应板块。</div>
+  <div class="input-row">
+    <textarea id="memoInput" placeholder="闪过的灵感…" rows="2"></textarea>
+    <button class="btn-add" onclick="addMemo()">记下</button>
+  </div>
+  <div class="memo-grid" id="memoGrid"></div>
+</div>
+
+</div><!-- /main-area -->
+</div><!-- /app-shell -->
+
+<!-- Toast & 图片预览 -->
+<div id="toast"></div>
+<div id="viewer" onclick="this.classList.remove('show')"><span class="close-v">×</span><img id="viewerImg" src=""></div>
+
+<script>
+// ===== 数据层 =====
+const STORE_KEY='creator_desk_v1';
+let DB={
+  todo:[],live:[],review:[],
+  book:[],makeupImg:[],
+  topic:[],inspoImg:[],script:[],hot:[],
+  flower:[],ring:[],craftImg:[],copy:[],stock:[],
+  ledger:{makeup:[],media:[],craft:[]},
+  buy:{makeup:[],craft:[],equip:[]},
+  memo:[]
+};
+function load(){
+  try{
+    const s=localStorage.getItem(STORE_KEY);
+    if(s){const d=JSON.parse(s);DB=Object.assign(DB,d);DB.ledger=Object.assign({makeup:[],media:[],craft:[]},DB.ledger||{});DB.buy=Object.assign({makeup:[],craft:[],equip:[]},DB.buy||{})}
+  }catch(e){}
+}
+function save(){
+  try{localStorage.setItem(STORE_KEY,JSON.stringify(DB))}catch(e){if(e.name==='QuotaExceededError')toast('存储已满，请清理图片')}
+}
+function ts(){return Date.now()}
+function fmtDate(t){const d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function fmtDateInput(t){const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+// ===== 面板切换 =====
+const panelMap={
+  'pnl-plan':   {title:'📋 每日工作总规划',   bg:'var(--c-plan)'},
+  'pnl-makeup': {title:'💄 线下约妆专属专区', bg:'var(--c-makeup)'},
+  'pnl-inspo':  {title:'📱 美妆自媒体灵感库', bg:'var(--c-inspo)'},
+  'pnl-craft':  {title:'🌼 滴胶手作灵感专区', bg:'var(--c-craft)'},
+  'pnl-ledger': {title:'💰 分类营收账本',     bg:'var(--c-ledger)'},
+  'pnl-buy':    {title:'🛒 采购购买清单',     bg:'var(--c-buy)'},
+  'pnl-memo':   {title:'✨ 临时碎灵感备忘录', bg:'var(--c-memo)'},
+};
+let currentPanel='pnl-plan';
+let allCollapsed=false;
+
+function switchPanel(pid){
+  if(currentPanel===pid)return;
+  document.getElementById(currentPanel).classList.remove('active');
+  document.getElementById(pid).classList.add('active');
+  currentPanel=pid;
+  // 更新顶栏标题
+  const info=panelMap[pid];
+  document.getElementById('pnlTitle').innerHTML=info.title;
+  // 同步左侧高亮
+  document.querySelectorAll('#sideNav .sn').forEach(a=>a.classList.toggle('active',a.dataset.panel===pid));
+  // 滚动到顶部
+  document.getElementById('mainArea').scrollTop=0;
+}
+
+// 全局收起/展开
+function toggleAllSubs(){
+  allCollapsed=!allCollapsed;
+  const panel=document.getElementById(currentPanel);
+  const subs=panel.querySelectorAll('.sub-tog');
+  subs.forEach(s=>s.style.display=allCollapsed?'none':'');
+  document.getElementById('toggleAll').textContent=allCollapsed?'展开':'收起';
+}
+
+// ===== UI 辅助 =====
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),1600)}
+function showAdd(key){const f=document.getElementById('add'+key.charAt(0).toUpperCase()+key.slice(1));if(f)f.style.display=f.style.display==='none'?'flex':'none';if(f&&f.style.display!=='none')f.querySelector('textarea,input')?.focus()}
+function toggleAdd(id){const f=document.getElementById(id);f.style.display=f.style.display==='none'?'block':'none'}
+function viewImg(src){document.getElementById('viewerImg').src=src;document.getElementById('viewer').classList.add('show')}
+
+// ===== 通用条目 =====
+function addItem(key){
+  const inp=document.getElementById(key+'Input');
+  const v=inp.value.trim();
+  if(!v){toast('请输入内容');return}
+  DB[key].push({id:ts(),text:v,time:ts()});
+  inp.value='';save();renderItems();toast('已添加');
+}
+function delItem(key,id){DB[key]=DB[key].filter(x=>x.id!==id);save();renderItems()}
+function editItem(key,id){
+  const it=DB[key].find(x=>x.id===id);if(!it)return;
+  const nv=prompt('修改内容：',it.text);
+  if(nv!==null&&nv.trim()){it.text=nv.trim();save();renderItems()}
+}
+function toggleTodo(id){const it=DB.todo.find(x=>x.id===id);if(it){it.done=!it.done;save();renderItems()}}
+
+function renderItems(){
+  const render=(key,listId,withCheck)=>{
+    const el=document.getElementById(listId);if(!el)return;
+    if(DB[key].length===0){el.innerHTML='<div class="empty">暂无记录，点击右上角新增</div>';return}
+    el.innerHTML=DB[key].map(it=>`
+      <div class="item ${it.done?'done':''}">
+        <div class="it-head">
+          ${withCheck?`<div class="chk" onclick="toggleTodo(${it.id})">${it.done?'✓':''}</div>`:''}
+          <div class="it-body">${esc(it.text)}</div>
+        </div>
+        <div class="it-meta"><span>${fmtDate(it.time)}</span></div>
+        <div class="it-actions">
+          <button onclick="editItem('${key}',${it.id})">编辑</button>
+          <button class="del" onclick="delItem('${key}',${it.id})">删除</button>
+        </div>
+      </div>`).join('');
+  };
+  render('todo','todoList',true);
+  render('topic','topicList');
+  render('script','scriptList');
+  render('hot','hotList');
+  render('flower','flowerList');
+  render('ring','ringList');
+  render('copy','copyList');
+  render('stock','stockList');
+}
+
+// ===== 直播计划 =====
+function addLive(){
+  const time=document.getElementById('liveTime').value;
+  const topic=document.getElementById('liveTopic').value.trim();
+  const goal=document.getElementById('liveGoal').value.trim();
+  const script=document.getElementById('liveScript').value.trim();
+  if(!topic){toast('请填写直播主题');return}
+  DB.live.push({id:ts(),time,topic,goal,script,ct:ts()});
+  ['liveTime','liveTopic','liveGoal','liveScript'].forEach(i=>document.getElementById(i).value='');
+  toggleAdd('liveForm');save();renderLive();toast('直播计划已添加');
+}
+function delLive(id){DB.live=DB.live.filter(x=>x.id!==id);save();renderLive()}
+function renderLive(){
+  const el=document.getElementById('liveList');
+  if(DB.live.length===0){el.innerHTML='<div class="empty">暂无直播计划</div>';return}
+  el.innerHTML=DB.live.map(l=>`
+    <div class="item">
+      <div class="it-body"><b>🎬 ${esc(l.topic)}</b></div>
+      ${l.time?`<div class="it-meta"><span>⏰ ${l.time.replace('T',' ')}</span></div>`:''}
+      ${l.goal?`<div class="it-meta"><span>🎯 目标：${esc(l.goal)}</span></div>`:''}
+      ${l.script?`<div class="note-line" style="margin-top:5px">📝 ${esc(l.script)}</div>`:''}
+      <div class="it-actions"><button class="del" onclick="delLive(${l.id})">删除</button></div>
+    </div>`).join('');
+}
+
+// ===== 每日复盘 =====
+function saveReview(){
+  const p=document.getElementById('rp_problem').value.trim();
+  const g=document.getElementById('rp_gain').value.trim();
+  const o=document.getElementById('rp_opt').value.trim();
+  if(!p&&!g&&!o){toast('请填写复盘内容');return}
+  DB.review.unshift({id:ts(),date:fmtDateInput(ts()),problem:p,gain:g,opt:o,ct:ts()});
+  ['rp_problem','rp_gain','rp_opt'].forEach(i=>document.getElementById(i).value='');
+  save();renderReview();toast('复盘已保存');
+}
+function delReview(id){DB.review=DB.review.filter(x=>x.id!==id);save();renderReview()}
+function renderReview(){
+  const el=document.getElementById('reviewList');
+  if(DB.review.length===0){el.innerHTML='';return}
+  el.innerHTML=DB.review.map(r=>`
+    <div class="item">
+      <div class="it-meta"><span>📅 ${r.date}</span></div>
+      ${r.problem?`<div class="note-line" style="margin-top:5px;border-left-color:#d4a09a"><b>问题</b><br>${esc(r.problem)}</div>`:''}
+      ${r.gain?`<div class="note-line" style="margin-top:5px;border-left-color:#9bab8e"><b>收获</b><br>${esc(r.gain)}</div>`:''}
+      ${r.opt?`<div class="note-line" style="margin-top:5px;border-left-color:#d4a373"><b>待优化</b><br>${esc(r.opt)}</div>`:''}
+      <div class="it-actions"><button class="del" onclick="delReview(${r.id})">删除</button></div>
+    </div>`).join('');
+}
+
+// ===== 约妆预约 =====
+let bookFilter='all';
+function setBookFilter(f,el){bookFilter=f;document.querySelectorAll('#bookFilter span').forEach(s=>s.classList.remove('active'));el.classList.add('active');renderBook()}
+function addBook(){
+  const date=document.getElementById('bk_date').value;
+  const place=document.getElementById('bk_place').value.trim();
+  const style=document.getElementById('bk_style').value.trim();
+  const note=document.getElementById('bk_note').value.trim();
+  const status=document.getElementById('bk_status').value;
+  if(!date&&!place&&!style){toast('请填写预约信息');return}
+  DB.book.unshift({id:ts(),date,place,style,note,status,ct:ts()});
+  ['bk_date','bk_place','bk_style','bk_note'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('bk_status').value='pending';
+  toggleAdd('bookForm');save();renderBook();toast('预约已登记');
+}
+function delBook(id){DB.book=DB.book.filter(x=>x.id!==id);save();renderBook()}
+function toggleBookStatus(id){const it=DB.book.find(x=>x.id===id);if(it){it.status=it.status==='done'?'pending':'done';save();renderBook()}}
+function renderBook(){
+  const el=document.getElementById('bookList');
+  let list=DB.book;
+  if(bookFilter!=='all')list=list.filter(x=>x.status===bookFilter);
+  if(list.length===0){el.innerHTML='<div class="empty">暂无预约记录</div>';return}
+  el.innerHTML=list.map(b=>`
+    <div class="item">
+      <div class="it-head">
+        <div class="it-body">
+          <b>${b.style?esc(b.style):'妆容预约'}</b>
+          ${b.date?`<div class="it-meta"><span>⏰ ${b.date.replace('T',' ')}</span></div>`:''}
+          ${b.place?`<div class="it-meta"><span>📍 ${esc(b.place)}</span></div>`:''}
+          ${b.note?`<div class="note-line" style="margin-top:5px">${esc(b.note)}</div>`:''}
+        </div>
+      </div>
+      <div class="it-actions">
+        <button style="font-size:10.5px;padding:2px 8px;border-radius:8px;cursor:pointer;${b.status==='done'?'background:rgba(127,163,134,0.2);color:#5e7d65':'background:rgba(212,160,154,0.2);color:#b07a74'}" onclick="toggleBookStatus(${b.id})">${b.status==='done'?'已完成':'待确认'}</button>
+        <button class="del" onclick="delBook(${b.id})">删除</button>
+      </div>
+    </div>`).join('');
+}
+
+// ===== 图片上传 =====
+function uploadImg(event,key){
+  const files=Array.from(event.target.files);
+  if(!files.length)return;
+  let processed=0;
+  files.forEach(file=>{
+    compressImg(file,800,0.7).then(dataUrl=>{
+      DB[key+'Img'].push({id:ts()+processed,src:dataUrl,time:ts()});
+      processed++;
+      if(processed===files.length){save();renderGallery();toast('图片已上传')}
+    });
+  });
+  event.target.value='';
+}
+function compressImg(file,maxW,quality){
+  return new Promise(res=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        let w=img.width,h=img.height;
+        if(w>maxW){h=h*maxW/w;w=maxW}
+        const c=document.createElement('canvas');
+        c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        res(c.toDataURL('image/jpeg',quality));
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function delImg(key,id){DB[key+'Img']=DB[key+'Img'].filter(x=>x.id!==id);save();renderGallery()}
+const galleryInputMap={makeup:'mkUpload',inspo:'inspoUpload',craft:'craftUpload'};
+const galleryIdMap={makeup:'mkGallery',inspo:'inspoGallery',craft:'craftGallery'};
+function renderGallery(){
+  ['makeup','inspo','craft'].forEach(key=>{
+    const el=document.getElementById(galleryIdMap[key]);
+    if(!el)return;
+    const list=DB[key+'Img']||[];
+    let html=list.map(p=>`
+      <div class="ph">
+        <img src="${p.src}" onclick="viewImg('${p.src}')">
+        <div class="del-ph" onclick="event.stopPropagation();delImg('${key}',${p.id})">×</div>
+      </div>`).join('');
+    html+=`<div class="ph add-ph" onclick="document.getElementById('${galleryInputMap[key]}').click()"><span style="font-size:18px">+</span><span>上传</span></div>`;
+    el.innerHTML=html;
+  });
+}
+
+// ===== 营收账本 =====
+const ledgerNames={makeup:'约妆',media:'自媒体',craft:'手作'};
+function addLedger(cat){
+  const idx=cat==='makeup'?1:cat==='media'?2:3;
+  const date_v=document.getElementById('ld'+idx+'_date').value;
+  const note=document.getElementById('ld'+idx+'_note').value.trim();
+  const amt=parseFloat(document.getElementById('ld'+idx+'_amt').value);
+  if(!amt||amt<=0){toast('请输入金额');return}
+  if(!date_v){toast('请选择日期');return}
+  DB.ledger[cat].push({id:ts(),date:date_v,note,amt,ct:ts()});
+  document.getElementById('ld'+idx+'_date').value='';
+  document.getElementById('ld'+idx+'_note').value='';
+  document.getElementById('ld'+idx+'_amt').value='';
+  save();renderLedger();toast('已记账');
+}
+function delLedger(cat,id){DB.ledger[cat]=DB.ledger[cat].filter(x=>x.id!==id);save();renderLedger()}
+function renderLedger(){
+  const month=document.getElementById('ledgerMonth').value;
+  const cats=['makeup','media','craft'];
+  let total=0;
+  cats.forEach((cat,i)=>{
+    const idx=i+1;
+    const el=document.getElementById('ld'+idx+'_table');
+    const sumEl=document.getElementById('ld'+idx+'_sum');
+    let list=DB.ledger[cat]||[];
+    if(month)list=list.filter(x=>x.date&&x.date.startsWith(month));
+    list=list.slice().sort((a,b)=>b.date.localeCompare(a.date));
+    let sum=0;list.forEach(x=>sum+=x.amt);total+=sum;
+    if(list.length===0){el.innerHTML='<div class="empty" style="padding:6px">暂无记录</div>'}
+    else{el.innerHTML=list.map(x=>`<div class="lr"><span>${x.date.slice(5)}</span><span style="font-size:11px;color:var(--ink-soft)">${esc(x.note||'—')}</span><span style="color:var(--accent);font-weight:600">¥${x.amt}</span><span class="lr-del" onclick="delLedger('${cat}',${x.id})">×</span></div>`).join('')}
+    sumEl.innerHTML=`<span>${ledgerNames[cat]}月度小计</span><b>¥${sum.toFixed(2)}</b>`;
+  });
+  document.getElementById('ldTotal').innerHTML=`<span style="font-weight:600">本月总收入</span><b style="font-size:15px">¥${total.toFixed(2)}</b>`;
+}
+
+// ===== 采购清单 =====
+let buyFilter='all';
+function setBuyFilter(f,el){buyFilter=f;document.querySelectorAll('#buyFilter span').forEach(s=>s.classList.remove('active'));el.classList.add('active');renderBuy()}
+function addBuy(cat){
+  const idx=cat==='makeup'?1:cat==='craft'?2:3;
+  const name=document.getElementById('buy'+idx+'_name').value.trim();
+  const budget=document.getElementById('buy'+idx+'_budget').value;
+  if(!name){toast('请输入采购项');return}
+  DB.buy[cat].push({id:ts(),name,budget:budget||'',status:'todo',ct:ts()});
+  document.getElementById('buy'+idx+'_name').value='';
+  document.getElementById('buy'+idx+'_budget').value='';
+  save();renderBuy();toast('已添加');
+}
+function delBuy(cat,id){DB.buy[cat]=DB.buy[cat].filter(x=>x.id!==id);save();renderBuy()}
+function toggleBuyStatus(cat,id){const it=DB.buy[cat].find(x=>x.id===id);if(it){it.status=it.status==='todo'?'done':'todo';save();renderBuy()}}
+function renderBuy(){
+  ['makeup','craft','equip'].forEach(cat=>{
+    const idx=cat==='makeup'?1:cat==='craft'?2:3;
+    const el=document.getElementById('buy'+idx+'List');
+    let list=DB.buy[cat]||[];
+    if(buyFilter!=='all')list=list.filter(x=>x.status===buyFilter);
+    if(list.length===0){el.innerHTML='<div class="empty" style="padding:6px">暂无</div>';return}
+    el.innerHTML=list.map(b=>`
+      <div class="buy-item">
+        <span class="b-name">${esc(b.name)}</span>
+        ${b.budget?`<span class="b-budget">预算¥${b.budget}</span>`:''}
+        <span class="b-status ${b.status}" onclick="toggleBuyStatus('${cat}',${b.id})">${b.status==='done'?'已采购':'待采购'}</span>
+        <span class="b-del" onclick="delBuy('${cat}',${b.id})">×</span>
+      </div>`).join('');
+  });
+}
+
+// ===== 临时备忘 =====
+function addMemo(){
+  const v=document.getElementById('memoInput').value.trim();
+  if(!v){toast('请输入灵感');return}
+  DB.memo.unshift({id:ts(),text:v,time:ts()});
+  document.getElementById('memoInput').value='';
+  save();renderMemo();toast('已记录');
+}
+function delMemo(id){DB.memo=DB.memo.filter(x=>x.id!==id);save();renderMemo()}
+function renderMemo(){
+  const el=document.getElementById('memoGrid');
+  if(DB.memo.length===0){el.innerHTML='<div class="empty" style="grid-column:span 2">暂无灵感记录</div>';return}
+  el.innerHTML=DB.memo.map(m=>`
+    <div class="memo-card">
+      <span class="mc-del" onclick="delMemo(${m.id})">×</span>
+      <div class="mc-text">${esc(m.text)}</div>
+      <div class="mc-time">${fmtDate(m.time)}</div>
+    </div>`).join('');
+}
+
+// ===== 导入导出 =====
+function exportData(){
+  const data=JSON.stringify(DB,null,2);
+  const blob=new Blob([data],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='创作者工作台_'+fmtDateInput(ts())+'.json';
+  a.click();
+  toast('已导出备份');
+}
+function importData(event){
+  const file=event.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const d=JSON.parse(e.target.result);
+      DB=Object.assign(DB,d);
+      DB.ledger=Object.assign({makeup:[],media:[],craft:[]},DB.ledger||{});
+      DB.buy=Object.assign({makeup:[],craft:[],equip:[]},DB.buy||{});
+      save();renderAll();toast('导入成功');
+    }catch(err){toast('导入失败：格式错误')}
+  };
+  reader.readAsText(file);
+  event.target.value='';
+}
+
+function renderAll(){
+  renderItems();renderLive();renderReview();renderBook();renderGallery();renderLedger();renderBuy();renderMemo();
+}
+
+// ===== 初始化 =====
+function init(){
+  const now=new Date();
+  const wk=['日','一','二','三','四','五','六'];
+  document.getElementById('sideDate').textContent=`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} 周${wk[now.getDay()]}`;
+  document.getElementById('ledgerMonth').value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  const today=fmtDateInput(ts());
+  ['ld1_date','ld2_date','ld3_date'].forEach(i=>{const el=document.getElementById(i);if(el)el.value=today});
+
+  load();renderAll();
+
+  // 侧栏点击切换
+  document.querySelectorAll('#sideNav .sn').forEach(a=>{
+    a.addEventListener('click',()=>switchPanel(a.dataset.panel));
+  });
+}
+init();
+</script>
+</body>
+</html>
