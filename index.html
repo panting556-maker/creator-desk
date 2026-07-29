@@ -119,9 +119,8 @@ img{max-width:100%;display:block}
 .item.done .it-body{text-decoration:line-through;color:var(--ink-faint)}
 .item.done .chk{background:var(--accent);border-color:var(--accent)}
 
-/* 体重板块 */
-.slogan-bar{background:linear-gradient(135deg,#f5e4e0,#e0ebe2);border-radius:var(--radius-sm);padding:12px 14px;text-align:center;margin-bottom:12px;font-size:15px;font-weight:600;letter-spacing:1px;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:6px}
-.weight-input-row{display:grid;grid-template-columns:1fr 1fr 70px;gap:6px;align-items:center;margin-top:8px}
+/* 体重输入 - 已改为双行全宽按钮 */
+.weight-input-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;align-items:center;margin-top:8px}
 .weight-input-row input{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:8px;padding:9px 11px;font-size:14px}
 .weight-table{margin-top:10px;font-size:13px}
 .weight-table .wr{display:grid;grid-template-columns:1fr 70px 60px 24px;gap:6px;padding:8px 4px;border-bottom:1px solid var(--line-soft);align-items:center}
@@ -248,11 +247,10 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
   <!-- 录入体重 -->
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">📊</span>今日体重记录</div>
-    <div class="weight-input-row">
-      <input id="wt_date" type="date">
-      <input id="wt_val" type="number" step="0.1" placeholder="体重 (kg)" inputmode="decimal">
-      <button class="btn-add" onclick="addWeight()">记录</button>
+    <div class="multi-input">
+      <div class="mi"><input id="wt_date" type="date"><input id="wt_val" type="number" step="0.1" placeholder="体重 (kg)" inputmode="decimal"></div>
     </div>
+    <button class="btn-add" style="margin-top:8px;width:100%;justify-content:center;padding:11px" onclick="addWeight()">✚ 记录体重</button>
   </div>
 
   <!-- 体重历史 + 汇总 -->
