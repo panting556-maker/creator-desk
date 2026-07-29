@@ -133,17 +133,25 @@ img{max-width:100%;display:block}
 .weight-summary .ws .ws-val{font-size:20px;font-weight:700;color:var(--accent);margin-bottom:2px}
 .weight-summary .ws .ws-label{font-size:11px;color:var(--ink-soft)}
 
-/* 减重奖励卡片 */
-.reward-section{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.reward-card{background:rgba(255,255,255,0.6);border-radius:var(--radius-sm);padding:12px;text-align:center;border:1.5px solid var(--line-soft);transition:all 0.3s}
-.reward-card.reached{border-color:var(--gold);background:linear-gradient(135deg,rgba(255,245,235,0.9),rgba(255,240,230,0.9));box-shadow:0 2px 12px rgba(212,163,115,0.18)}
-.reward-card .rw-icon{font-size:28px;margin-bottom:4px}
-.reward-card .rw-title{font-size:13px;font-weight:600;margin-bottom:2px;color:var(--ink)}
-.reward-card .rw-target{font-size:11px;color:var(--ink-soft);margin-bottom:4px}
-.reward-card .rw-reward{font-size:12px;color:var(--gold);font-weight:600}
-.reward-card .rw-progress{font-size:11px;color:var(--ink-faint);margin-top:4px}
-.reward-card .rw-claim{font-size:12px;margin-top:6px;padding:4px 12px;border-radius:12px;background:var(--gold);color:#fff;cursor:pointer;display:inline-block}
-.reward-card .rw-claim.claimed{background:#c2cdb4;pointer-events:none}
+/* 标语 */
+.slogan-bar{background:linear-gradient(135deg,#f5e4e0 0%,#fdf0ed 30%,#fdf8f4 60%,#e0ebe2 100%);border-radius:var(--radius-sm);padding:14px 16px;text-align:center;margin-bottom:14px;font-size:16px;font-weight:600;letter-spacing:2px;color:var(--ink);border:1px solid rgba(212,163,115,0.2);box-shadow:0 2px 8px rgba(212,163,115,0.08)}
+
+/* 奖励卡片 - 渐进变色 + 进度条 */
+.reward-section{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.reward-card{background:rgba(255,255,255,0.55);border-radius:var(--radius-sm);padding:14px 10px;text-align:center;border:1.5px solid var(--line-soft);transition:all 0.5s ease;position:relative;overflow:hidden}
+.reward-card::before{content:'';position:absolute;inset:0;border-radius:var(--radius-sm);z-index:0;transition:all 0.5s ease}
+.reward-card>*{position:relative;z-index:1}
+.reward-card .rw-icon{font-size:30px;margin-bottom:5px;transition:transform 0.3s}
+.reward-card .rw-title{font-size:14px;font-weight:600;margin-bottom:2px;color:var(--ink)}
+.reward-card .rw-target{font-size:12px;color:var(--ink-soft);margin-bottom:5px}
+.reward-card .rw-reward{font-size:12px;color:var(--gold);font-weight:600;margin-bottom:4px}
+.reward-card .rw-progress{font-size:11px;color:var(--ink-faint);margin-top:2px}
+/* 进度条 */
+.rw-bar{height:6px;border-radius:3px;background:var(--line-soft);margin-top:6px;overflow:hidden;transition:all 0.5s ease}
+.rw-bar .rw-fill{height:100%;border-radius:3px;transition:width 0.6s ease;background:var(--accent-soft)}
+.reward-card.reached .rw-bar .rw-fill{background:var(--gold)}
+.reward-card .rw-claim{font-size:12px;margin-top:7px;padding:5px 14px;border-radius:13px;background:var(--gold);color:#fff;cursor:pointer;display:inline-block;transition:all 0.3s}
+.reward-card .rw-claim.claimed{background:var(--accent-soft);pointer-events:none}
 .reward-card .rw-claim:active{transform:scale(0.94)}
 
 /* 相册 */
@@ -631,27 +639,48 @@ function renderWeight(){
   const s1kg=5; // 10斤=5kg
   const s2kg=10; // 20斤=10kg
   const lostNum=parseFloat(lost)||0;
+  const s1Pct=Math.min(lostNum/s1kg,1);
+  const s2Pct=Math.min(lostNum/s2kg,1);
   const s1Reached=lostNum>=s1kg;
   const s2Reached=lostNum>=s2kg;
   const s1Claimed=DB.weightRewards.stage1;
   const s2Claimed=DB.weightRewards.stage2;
 
+  // 根据进度百分比计算渐变色：从灰白到金色
+  function progressColor(pct){
+    if(pct>=1)return 'linear-gradient(135deg,rgba(255,245,235,0.95),rgba(255,236,220,0.95))';
+    if(pct>=0.5)return `linear-gradient(135deg,rgba(255,248,243,${0.5+pct*0.5}),rgba(255,242,232,${0.5+pct*0.5}))`;
+    return `rgba(255,255,255,${0.55+pct*0.5})`;
+  }
+  function borderColor(pct){
+    if(pct>=1)return 'var(--gold)';
+    if(pct>=0.5)return 'rgba(212,163,115,0.5)';
+    return 'var(--line-soft)';
+  }
+  function boxShadow(pct){
+    if(pct>=1)return '0 2px 14px rgba(212,163,115,0.2)';
+    if(pct>=0.5)return '0 2px 8px rgba(212,163,115,0.1)';
+    return 'none';
+  }
+
   reward.innerHTML=`
-    <div class="reward-card ${s1Reached?'reached':''}">
-      <div class="rw-icon">🎁</div>
+    <div class="reward-card" style="background:${progressColor(s1Pct)};border-color:${borderColor(s1Pct)};box-shadow:${boxShadow(s1Pct)}">
+      <div class="rw-icon">${s1Reached?'🎊':'🎁'}</div>
       <div class="rw-title">第一阶段</div>
-      <div class="rw-target">减重 10 斤</div>
-      <div class="rw-reward">奖励：达成奖励 ✨</div>
-      <div class="rw-progress">已减 ${lostNum.toFixed(1)}kg / 5kg${s1Reached?' ✅':''}</div>
-      ${s1Reached&&!s1Claimed?`<span class="rw-claim" onclick="claimReward(1)">🎉 领取奖励</span>`:s1Claimed?`<span class="rw-claim claimed">✓ 已领取</span>`:''}
+      <div class="rw-target">减重 10 斤（5kg）</div>
+      <div class="rw-reward">${s1Reached&&s1Claimed?'✓ 奖励已领取':s1Reached?'🎉 达成！领取奖励':'达成奖励 ✨'}</div>
+      <div class="rw-progress">已减 ${lostNum.toFixed(1)}kg / 5kg</div>
+      <div class="rw-bar"><div class="rw-fill" style="width:${(s1Pct*100).toFixed(0)}%"></div></div>
+      ${s1Reached&&!s1Claimed?`<span class="rw-claim" onclick="claimReward(1)">🎉 领取奖励</span>`:''}
     </div>
-    <div class="reward-card ${s2Reached?'reached':''}">
-      <div class="rw-icon">🛍️</div>
+    <div class="reward-card" style="background:${progressColor(s2Pct)};border-color:${borderColor(s2Pct)};box-shadow:${boxShadow(s2Pct)}">
+      <div class="rw-icon">${s2Reached?'🎊':'🛍️'}</div>
       <div class="rw-title">终极目标</div>
-      <div class="rw-target">减重 20 斤</div>
-      <div class="rw-reward">奖励：买新衣服 👗</div>
-      <div class="rw-progress">已减 ${lostNum.toFixed(1)}kg / 10kg${s2Reached?' ✅':''}</div>
-      ${s2Reached&&!s2Claimed?`<span class="rw-claim" onclick="claimReward(2)">🎉 领取奖励</span>`:s2Claimed?`<span class="rw-claim claimed">✓ 已领取</span>`:''}
+      <div class="rw-target">减重 20 斤（10kg）</div>
+      <div class="rw-reward">${s2Reached&&s2Claimed?'✓ 奖励已领取':s2Reached?'🎉 达成！买新衣服':'买新衣服 👗'}</div>
+      <div class="rw-progress">已减 ${lostNum.toFixed(1)}kg / 10kg</div>
+      <div class="rw-bar"><div class="rw-fill" style="width:${(s2Pct*100).toFixed(0)}%"></div></div>
+      ${s2Reached&&!s2Claimed?`<span class="rw-claim" onclick="claimReward(2)">🎉 领取奖励</span>`:''}
     </div>
   `;
 }
