@@ -20,10 +20,12 @@
   --accent:#9bab8e;
   --accent-soft:#c2cdb4;
   --danger:#c9a09a;
+  --gold:#d4a373;
+  --pink:#e8b4b8;
   --radius:14px;
   --radius-sm:9px;
-  --shadow:0 2px 12px rgba(120,105,85,0.06);
   /* 板块底色 */
+  --c-weight:#f0ebe3;     /* 浅燕麦色 - 体重 */
   --c-plan:#faf6ee;
   --c-makeup:#f0e6d6;
   --c-inspo:#f5e4e0;
@@ -31,102 +33,58 @@
   --c-ledger:#e8dfc8;
   --c-buy:#ece6da;
   --c-memo:#f3ede3;
-  /* 布局 */
-  --sidebar-w:58px;
+  --sidebar-w:60px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{
-  background:var(--bg-page);color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;
-  height:100%;overflow:hidden;
-}
+html,body{background:var(--bg-page);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;height:100%;overflow:hidden}
 input,textarea,select,button{font-family:inherit;font-size:inherit;color:inherit;border:none;outline:none;background:none}
-textarea{resize:none;line-height:1.6}
+textarea{resize:none;line-height:1.7}
 button{cursor:pointer}
 img{max-width:100%;display:block}
 
-/* ===== 整体布局 ===== */
 .app-shell{display:flex;height:100%;max-width:480px;margin:0 auto;position:relative}
 
 /* ===== 左侧导航 ===== */
-.sidebar{
-  width:var(--sidebar-w);flex-shrink:0;
-  background:rgba(245,240,232,0.96);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  border-right:1px solid var(--line-soft);
-  display:flex;flex-direction:column;align-items:center;
-  padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);
-  overflow-y:auto;z-index:10;
-  -webkit-overflow-scrolling:touch;
-}
-.side-brand{
-  padding:10px 0 6px;text-align:center;border-bottom:1px solid var(--line-soft);
-  margin-bottom:4px;width:100%;
-}
-.side-brand .sb-icon{font-size:20px;display:block}
-.side-brand .sb-date{font-size:8px;color:var(--ink-faint);margin-top:2px}
-.side-nav{flex:1;display:flex;flex-direction:column;gap:3px;width:100%;padding:0 5px}
-.side-nav .sn{
-  display:flex;flex-direction:column;align-items:center;gap:1px;
-  padding:7px 3px;border-radius:10px;
-  font-size:9px;color:var(--ink-faint);text-decoration:none;
-  cursor:pointer;transition:all 0.18s;position:relative;
-  -webkit-tap-highlight-color:transparent;
-  user-select:none;
-}
-.side-nav .sn .sni{font-size:18px;line-height:1.2}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:rgba(245,240,232,0.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-right:1px solid var(--line-soft);display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0);overflow-y:auto;z-index:10;-webkit-overflow-scrolling:touch}
+.side-brand{padding:10px 0 6px;text-align:center;border-bottom:1px solid var(--line-soft);margin-bottom:4px;width:100%}
+.side-brand .sb-icon{font-size:21px;display:block}
+.side-brand .sb-date{font-size:9px;color:var(--ink-faint);margin-top:2px}
+.side-nav{flex:1;display:flex;flex-direction:column;gap:3px;width:100%;padding:0 4px}
+.side-nav .sn{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 2px;border-radius:10px;font-size:10px;color:var(--ink-faint);text-decoration:none;cursor:pointer;transition:all 0.18s;position:relative;-webkit-tap-highlight-color:transparent;user-select:none}
+.side-nav .sn .sni{font-size:19px;line-height:1.2}
 .side-nav .sn .snl{text-align:center;line-height:1.3;max-width:48px;word-break:keep-all}
 .side-nav .sn:hover{background:rgba(155,171,142,0.08)}
-.side-nav .sn.active{
-  background:rgba(155,171,142,0.18);color:var(--accent);font-weight:600;
-}
-.side-nav .sn.active::before{
-  content:'';position:absolute;left:-5px;top:50%;transform:translateY(-50%);
-  width:3px;height:16px;border-radius:2px;background:var(--accent);
-}
-.side-footer{
-  padding:6px 0 8px;display:flex;flex-direction:column;gap:5px;align-items:center;
-  border-top:1px solid var(--line-soft);margin-top:4px;width:100%;
-}
-.side-footer button{
-  width:32px;height:32px;border-radius:50%;
-  background:var(--bg-card);border:1px solid var(--line-soft);
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;color:var(--ink-soft);
-}
+.side-nav .sn.active{background:rgba(155,171,142,0.18);color:var(--accent);font-weight:600}
+.side-nav .sn.active::before{content:'';position:absolute;left:-4px;top:50%;transform:translateY(-50%);width:3px;height:16px;border-radius:2px;background:var(--accent)}
+.side-footer{padding:6px 0 8px;display:flex;flex-direction:column;gap:5px;align-items:center;border-top:1px solid var(--line-soft);margin-top:4px;width:100%}
+.side-footer button{width:34px;height:34px;border-radius:50%;background:var(--bg-card);border:1px solid var(--line-soft);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink-soft)}
 .side-footer button:active{transform:scale(0.92)}
 
 /* ===== 右侧主内容 ===== */
 .main-area{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative}
+.topbar{position:sticky;top:0;z-index:5;background:rgba(245,240,232,0.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:env(safe-area-inset-top,0) 12px 10px;border-bottom:1px solid var(--line-soft)}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;padding-top:8px}
+.topbar h1{font-size:17px;font-weight:600;letter-spacing:0.3px;color:var(--ink);display:flex;align-items:center;gap:6px}
+.topbar h1 .leaf{font-size:16px}
+.topbar .tog{font-size:12px;color:var(--ink-soft);cursor:pointer;padding:3px 10px;border-radius:10px;background:rgba(255,255,255,0.5)}
 
-/* 顶部条 */
-.topbar{
-  position:sticky;top:0;z-index:5;
-  background:rgba(245,240,232,0.88);
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  padding:env(safe-area-inset-top,0) 10px 8px;border-bottom:1px solid var(--line-soft);
-}
-.topbar-inner{display:flex;align-items:center;justify-content:space-between;padding-top:6px}
-.topbar h1{font-size:16px;font-weight:600;letter-spacing:0.3px;color:var(--ink);display:flex;align-items:center;gap:5px}
-.topbar h1 .leaf{font-size:15px}
-.topbar .tog{font-size:11px;color:var(--ink-soft);cursor:pointer;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,0.5)}
-
-/* 面板容器 */
-.panel{display:none;padding:10px;padding-bottom:20px}
+/* 面板 */
+.panel{display:none;padding:12px;padding-bottom:24px}
 .panel.active{display:block}
-.panel .panel-head{padding:6px 4px 10px;display:flex;align-items:center;gap:8px}
-.panel .panel-head .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 3px rgba(255,255,255,0.5)}
-.panel .panel-head h2{font-size:15px;font-weight:600;letter-spacing:0.3px}
-.panel .panel-head .tag{font-size:10px;color:var(--ink-faint);margin-left:auto;letter-spacing:0.5px}
+.panel .panel-head{padding:6px 4px 12px;display:flex;align-items:center;gap:9px}
+.panel .panel-head .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 3px rgba(255,255,255,0.5)}
+.panel .panel-head h2{font-size:16px;font-weight:600;letter-spacing:0.3px}
+.panel .panel-head .tag{font-size:11px;color:var(--ink-faint);margin-left:auto;letter-spacing:0.5px}
 
 /* 子模块 */
-.sub{margin:8px 0;padding:10px 11px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.55)}
-.sub-title{font-size:12.5px;font-weight:600;margin-bottom:7px;display:flex;align-items:center;gap:5px;color:var(--ink)}
-.sub-title .ico{font-size:12px;opacity:0.8}
-.sub-title .add{margin-left:auto;font-size:10px;color:var(--accent);cursor:pointer;padding:2px 8px;border-radius:10px;background:rgba(155,171,142,0.12);font-weight:500}
+.sub{margin:10px 0;padding:12px 13px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.55)}
+.sub-title{font-size:14px;font-weight:600;margin-bottom:9px;display:flex;align-items:center;gap:6px;color:var(--ink)}
+.sub-title .ico{font-size:14px;opacity:0.8}
+.sub-title .add{margin-left:auto;font-size:12px;color:var(--accent);cursor:pointer;padding:3px 10px;border-radius:10px;background:rgba(155,171,142,0.12);font-weight:500}
 
 /* 板块底色 */
+.pnl-weight{background:var(--c-weight)}
+.pnl-weight .dot{background:var(--pink)}
 .pnl-plan{background:var(--c-plan)}
 .pnl-plan .dot{background:#d4a373}
 .pnl-makeup{background:var(--c-makeup)}
@@ -143,78 +101,106 @@ img{max-width:100%;display:block}
 .pnl-memo .dot{background:#b8a890}
 
 /* 输入 */
-.input-row{display:flex;gap:5px;align-items:flex-start;margin-top:7px}
-.input-row textarea,.input-row input{flex:1;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:7px;padding:7px 9px;font-size:12.5px;min-height:34px}
-.input-row textarea{min-height:46px}
-.btn-add{background:var(--accent);color:#fff;padding:6px 12px;border-radius:7px;font-size:11px;font-weight:500;white-space:nowrap;display:flex;align-items:center;gap:3px}
+.input-row{display:flex;gap:6px;align-items:flex-start;margin-top:8px}
+.input-row textarea,.input-row input{flex:1;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:8px;padding:9px 11px;font-size:14px;min-height:38px}
+.input-row textarea{min-height:52px}
+.btn-add{background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;white-space:nowrap;display:flex;align-items:center;gap:3px}
 .btn-add:active{transform:scale(0.96)}
 
 /* 条目卡片 */
-.item{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:8px;padding:9px 10px;margin-top:7px}
-.item .it-head{display:flex;align-items:flex-start;gap:7px}
-.item .it-body{font-size:12.5px;line-height:1.55;color:var(--ink);word-break:break-word;white-space:pre-wrap;flex:1}
-.item .it-meta{font-size:9.5px;color:var(--ink-faint);margin-top:5px;display:flex;gap:7px;flex-wrap:wrap}
-.item .it-actions{display:flex;gap:3px;margin-top:5px}
-.item .it-actions button{font-size:10.5px;color:var(--ink-soft);padding:2px 7px;border-radius:7px;background:rgba(232,223,211,0.4)}
+.item{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:9px;padding:11px 12px;margin-top:8px}
+.item .it-head{display:flex;align-items:flex-start;gap:8px}
+.item .it-body{font-size:14px;line-height:1.65;color:var(--ink);word-break:break-word;white-space:pre-wrap;flex:1}
+.item .it-meta{font-size:11px;color:var(--ink-faint);margin-top:6px;display:flex;gap:8px;flex-wrap:wrap}
+.item .it-actions{display:flex;gap:4px;margin-top:6px}
+.item .it-actions button{font-size:12px;color:var(--ink-soft);padding:3px 9px;border-radius:8px;background:rgba(232,223,211,0.4)}
 .item .it-actions .del{color:var(--danger)}
-.item .chk{width:17px;height:17px;border:1.5px solid var(--ink-faint);border-radius:4px;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;background:#fff}
+.item .chk{width:20px;height:20px;border:1.5px solid var(--ink-faint);border-radius:5px;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;background:#fff}
 .item.done .it-body{text-decoration:line-through;color:var(--ink-faint)}
 .item.done .chk{background:var(--accent);border-color:var(--accent)}
 
+/* 体重板块 */
+.slogan-bar{background:linear-gradient(135deg,#f5e4e0,#e0ebe2);border-radius:var(--radius-sm);padding:12px 14px;text-align:center;margin-bottom:12px;font-size:15px;font-weight:600;letter-spacing:1px;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:6px}
+.weight-input-row{display:grid;grid-template-columns:1fr 1fr 70px;gap:6px;align-items:center;margin-top:8px}
+.weight-input-row input{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:8px;padding:9px 11px;font-size:14px}
+.weight-table{margin-top:10px;font-size:13px}
+.weight-table .wr{display:grid;grid-template-columns:1fr 70px 60px 24px;gap:6px;padding:8px 4px;border-bottom:1px solid var(--line-soft);align-items:center}
+.weight-table .wr .w-del{color:var(--danger);font-size:14px;text-align:center;cursor:pointer}
+.weight-table .wr .w-delta{font-size:12px;font-weight:600;text-align:center}
+.weight-table .wr .w-delta.down{color:#5e9b6e}
+.weight-table .wr .w-delta.up{color:#c97a6e}
+.weight-summary{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.weight-summary .ws{background:rgba(255,255,255,0.6);border-radius:9px;padding:10px 12px;text-align:center}
+.weight-summary .ws .ws-val{font-size:20px;font-weight:700;color:var(--accent);margin-bottom:2px}
+.weight-summary .ws .ws-label{font-size:11px;color:var(--ink-soft)}
+
+/* 减重奖励卡片 */
+.reward-section{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.reward-card{background:rgba(255,255,255,0.6);border-radius:var(--radius-sm);padding:12px;text-align:center;border:1.5px solid var(--line-soft);transition:all 0.3s}
+.reward-card.reached{border-color:var(--gold);background:linear-gradient(135deg,rgba(255,245,235,0.9),rgba(255,240,230,0.9));box-shadow:0 2px 12px rgba(212,163,115,0.18)}
+.reward-card .rw-icon{font-size:28px;margin-bottom:4px}
+.reward-card .rw-title{font-size:13px;font-weight:600;margin-bottom:2px;color:var(--ink)}
+.reward-card .rw-target{font-size:11px;color:var(--ink-soft);margin-bottom:4px}
+.reward-card .rw-reward{font-size:12px;color:var(--gold);font-weight:600}
+.reward-card .rw-progress{font-size:11px;color:var(--ink-faint);margin-top:4px}
+.reward-card .rw-claim{font-size:12px;margin-top:6px;padding:4px 12px;border-radius:12px;background:var(--gold);color:#fff;cursor:pointer;display:inline-block}
+.reward-card .rw-claim.claimed{background:#c2cdb4;pointer-events:none}
+.reward-card .rw-claim:active{transform:scale(0.94)}
+
 /* 相册 */
-.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:7px}
-.gallery .ph{position:relative;aspect-ratio:1;border-radius:7px;overflow:hidden;background:var(--line-soft);cursor:pointer}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:8px}
+.gallery .ph{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--line-soft);cursor:pointer}
 .gallery .ph img{width:100%;height:100%;object-fit:cover}
-.gallery .ph .del-ph{position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,0.45);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center}
-.gallery .add-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;border:1.5px dashed var(--line);color:var(--ink-faint);font-size:10px;gap:2px}
+.gallery .ph .del-ph{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.45);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center}
+.gallery .add-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;border:1.5px dashed var(--line);color:var(--ink-faint);font-size:12px;gap:3px}
 
 /* 筛选 */
-.filter-tabs{display:flex;gap:4px;flex-wrap:wrap;margin:5px 0 2px}
-.filter-tabs span{font-size:10.5px;padding:2px 9px;border-radius:10px;background:rgba(255,255,255,0.5);color:var(--ink-soft);cursor:pointer}
+.filter-tabs{display:flex;gap:5px;flex-wrap:wrap;margin:6px 0 2px}
+.filter-tabs span{font-size:12px;padding:3px 11px;border-radius:11px;background:rgba(255,255,255,0.5);color:var(--ink-soft);cursor:pointer}
 .filter-tabs span.active{background:var(--accent);color:#fff}
 
 /* 账本 */
-.ledger-row{display:grid;grid-template-columns:55px 1fr 65px;gap:5px;align-items:center;margin-top:5px}
-.ledger-row input{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:6px;padding:5px 7px;font-size:11.5px}
-.ledger-table{margin-top:7px;font-size:11.5px}
-.ledger-table .lr{display:grid;grid-template-columns:50px 1fr 55px 18px;gap:4px;padding:5px 3px;border-bottom:1px solid var(--line-soft);align-items:center}
-.ledger-table .lr .lr-del{color:var(--danger);font-size:12px;text-align:center;cursor:pointer}
-.ledger-sum{margin-top:7px;padding:7px 9px;background:rgba(255,255,255,0.6);border-radius:7px;font-size:11.5px;display:flex;justify-content:space-between}
-.ledger-sum b{color:var(--accent);font-size:13px}
+.ledger-row{display:grid;grid-template-columns:60px 1fr 70px;gap:6px;align-items:center;margin-top:6px}
+.ledger-row input{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:7px;padding:7px 9px;font-size:13px}
+.ledger-table{margin-top:8px;font-size:13px}
+.ledger-table .lr{display:grid;grid-template-columns:55px 1fr 60px 20px;gap:5px;padding:6px 4px;border-bottom:1px solid var(--line-soft);align-items:center}
+.ledger-table .lr .lr-del{color:var(--danger);font-size:14px;text-align:center;cursor:pointer}
+.ledger-sum{margin-top:8px;padding:8px 11px;background:rgba(255,255,255,0.6);border-radius:8px;font-size:13px;display:flex;justify-content:space-between}
+.ledger-sum b{color:var(--accent);font-size:15px}
 
 /* 采购 */
-.buy-item{display:flex;align-items:center;gap:7px;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:7px;padding:7px 9px;margin-top:5px;font-size:11.5px}
+.buy-item{display:flex;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:8px;padding:9px 11px;margin-top:6px;font-size:13px}
 .buy-item .b-name{flex:1}
-.buy-item .b-budget{color:var(--ink-soft);font-size:10px}
-.buy-item .b-status{font-size:9.5px;padding:2px 6px;border-radius:8px;cursor:pointer}
+.buy-item .b-budget{color:var(--ink-soft);font-size:11px}
+.buy-item .b-status{font-size:11px;padding:3px 8px;border-radius:9px;cursor:pointer}
 .buy-item .b-status.todo{background:rgba(212,160,154,0.2);color:#b07a74}
 .buy-item .b-status.done{background:rgba(127,163,134,0.2);color:#5e7d65}
-.buy-item .b-del{color:var(--danger);font-size:12px;padding:0 3px}
+.buy-item .b-del{color:var(--danger);font-size:14px;padding:0 4px}
 
 /* 备忘录 */
-.memo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:7px}
-.memo-card{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:8px;padding:9px;font-size:11.5px;position:relative;min-height:65px}
-.memo-card .mc-text{white-space:pre-wrap;word-break:break-word;line-height:1.5;color:var(--ink)}
-.memo-card .mc-time{font-size:8.5px;color:var(--ink-faint);margin-top:5px}
-.memo-card .mc-del{position:absolute;top:4px;right:5px;color:var(--danger);font-size:11px;opacity:0.6}
+.memo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+.memo-card{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:9px;padding:11px;font-size:13px;position:relative;min-height:72px}
+.memo-card .mc-text{white-space:pre-wrap;word-break:break-word;line-height:1.6;color:var(--ink)}
+.memo-card .mc-time{font-size:10px;color:var(--ink-faint);margin-top:6px}
+.memo-card .mc-del{position:absolute;top:5px;right:6px;color:var(--danger);font-size:13px;opacity:0.6}
 
 /* 通用 */
-.empty{font-size:10.5px;color:var(--ink-faint);text-align:center;padding:12px 0;line-height:1.8}
-#toast{position:fixed;top:50px;left:50%;transform:translateX(-50%) translateY(-20px);background:rgba(90,82,70,0.92);color:#fff;padding:6px 16px;border-radius:18px;font-size:11.5px;z-index:999;opacity:0;transition:all 0.3s;pointer-events:none;max-width:90vw}
+.empty{font-size:12px;color:var(--ink-faint);text-align:center;padding:14px 0;line-height:1.8}
+#toast{position:fixed;top:50px;left:50%;transform:translateX(-50%) translateY(-20px);background:rgba(90,82,70,0.92);color:#fff;padding:8px 18px;border-radius:20px;font-size:13px;z-index:999;opacity:0;transition:all 0.3s;pointer-events:none;max-width:90vw}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #viewer{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:1000;display:none;align-items:center;justify-content:center;padding:30px}
 #viewer.show{display:flex}
 #viewer img{max-width:100%;max-height:100%;border-radius:8px}
-#viewer .close-v{position:absolute;top:20px;right:20px;color:#fff;font-size:28px}
-select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!important;border-radius:6px!important;padding:4px 7px!important;font-size:11.5px!important;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%238a8074' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 7px center!important;padding-right:20px!important}
-.field-label{font-size:10.5px;color:var(--ink-soft);margin:5px 0 2px}
-.multi-input{display:grid;gap:4px;margin-top:5px}
-.multi-input .mi{display:flex;gap:4px;align-items:center}
-.multi-input .mi input,.multi-input .mi textarea{flex:1;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:6px;padding:5px 7px;font-size:11.5px}
-.multi-input .mi textarea{min-height:34px}
-.note-line{font-size:10.5px;color:var(--ink-soft);margin-top:5px;line-height:1.55;padding:5px 7px;background:rgba(255,255,255,0.4);border-radius:6px;border-left:2px solid var(--accent-soft)}
-.month-pick{display:flex;align-items:center;gap:5px;margin:5px 0}
-.month-pick input{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:6px;padding:3px 7px;font-size:11.5px}
+#viewer .close-v{position:absolute;top:20px;right:20px;color:#fff;font-size:30px}
+select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!important;border-radius:7px!important;padding:6px 9px!important;font-size:13px!important;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%238a8074' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-position:right 9px center!important;padding-right:22px!important}
+.field-label{font-size:12px;color:var(--ink-soft);margin:7px 0 3px}
+.multi-input{display:grid;gap:5px;margin-top:6px}
+.multi-input .mi{display:flex;gap:5px;align-items:center}
+.multi-input .mi input,.multi-input .mi textarea{flex:1;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:7px;padding:7px 9px;font-size:13px}
+.multi-input .mi textarea{min-height:38px}
+.note-line{font-size:12px;color:var(--ink-soft);margin-top:6px;line-height:1.65;padding:6px 9px;background:rgba(255,255,255,0.4);border-radius:7px;border-left:2px solid var(--accent-soft)}
+.month-pick{display:flex;align-items:center;gap:6px;margin:6px 0}
+.month-pick input{background:var(--bg-card);border:1px solid var(--line-soft);border-radius:7px;padding:5px 9px;font-size:13px}
 </style>
 </head>
 <body>
@@ -227,7 +213,8 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
     <div class="sb-date" id="sideDate"></div>
   </div>
   <div class="side-nav" id="sideNav">
-    <a class="sn active" data-panel="pnl-plan"><span class="sni">📋</span><span class="snl">规划</span></a>
+    <a class="sn active" data-panel="pnl-weight"><span class="sni">⚖️</span><span class="snl">体重</span></a>
+    <a class="sn" data-panel="pnl-plan"><span class="sni">📋</span><span class="snl">规划</span></a>
     <a class="sn" data-panel="pnl-makeup"><span class="sni">💄</span><span class="snl">约妆</span></a>
     <a class="sn" data-panel="pnl-inspo"><span class="sni">📱</span><span class="snl">灵感</span></a>
     <a class="sn" data-panel="pnl-craft"><span class="sni">🌼</span><span class="snl">手作</span></a>
@@ -247,13 +234,43 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
 
   <div class="topbar" id="topbar">
     <div class="topbar-inner">
-      <h1 id="pnlTitle"><span class="leaf">📋</span>每日工作总规划</h1>
+      <h1 id="pnlTitle"><span class="leaf">⚖️</span>体重记录 & 减重打卡</h1>
       <span class="tog" id="toggleAll" onclick="toggleAllSubs()">收起</span>
     </div>
   </div>
 
+<!-- ===== 板块0 体重记录 ===== -->
+<div class="panel pnl-weight active" id="pnl-weight">
+  <div class="panel-head"><span class="dot"></span><h2>体重记录 & 减重打卡</h2><span class="tag">浅燕麦</span></div>
+
+  <div class="slogan-bar">✨ 瘦了就能爆红 ✨</div>
+
+  <!-- 录入体重 -->
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">📊</span>今日体重记录</div>
+    <div class="weight-input-row">
+      <input id="wt_date" type="date">
+      <input id="wt_val" type="number" step="0.1" placeholder="体重 (kg)" inputmode="decimal">
+      <button class="btn-add" onclick="addWeight()">记录</button>
+    </div>
+  </div>
+
+  <!-- 体重历史 + 汇总 -->
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">📉</span>体重变化趋势</div>
+    <div class="weight-summary" id="weightSummary"></div>
+    <div class="weight-table" id="weightTable"></div>
+  </div>
+
+  <!-- 减重奖励 -->
+  <div class="sub sub-tog">
+    <div class="sub-title"><span class="ico">🏆</span>减重目标与奖励</div>
+    <div class="reward-section" id="rewardSection"></div>
+  </div>
+</div>
+
 <!-- ===== 板块1 每日工作规划 ===== -->
-<div class="panel pnl-plan active" id="pnl-plan">
+<div class="panel pnl-plan" id="pnl-plan">
   <div class="panel-head"><span class="dot"></span><h2>每日工作总规划</h2></div>
 
   <div class="sub sub-tog">
@@ -269,7 +286,7 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
     <div class="sub-title"><span class="ico">🎬</span>直播计划表<span class="add" onclick="toggleAdd('liveForm')">+ 新增</span></div>
     <div id="liveList"></div>
     <div id="liveForm" style="display:none" class="multi-input">
-      <div class="mi"><input id="liveTime" type="datetime-local" style="font-size:11px"></div>
+      <div class="mi"><input id="liveTime" type="datetime-local"></div>
       <div class="mi"><input id="liveTopic" placeholder="直播主题"></div>
       <div class="mi"><input id="liveGoal" placeholder="本场带货目标"></div>
       <div class="mi"><textarea id="liveScript" placeholder="直播脚本要点…" rows="2"></textarea></div>
@@ -280,12 +297,12 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">📝</span>每日复盘</div>
     <div class="field-label">当日问题</div>
-    <textarea id="rp_problem" rows="2" style="width:100%;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:6px;padding:7px;font-size:11.5px" placeholder="遇到的问题…"></textarea>
+    <textarea id="rp_problem" rows="2" style="width:100%;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:7px;padding:9px;font-size:13px" placeholder="遇到的问题…"></textarea>
     <div class="field-label">今日收获</div>
-    <textarea id="rp_gain" rows="2" style="width:100%;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:6px;padding:7px;font-size:11.5px" placeholder="收获与心得…"></textarea>
+    <textarea id="rp_gain" rows="2" style="width:100%;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:7px;padding:9px;font-size:13px" placeholder="收获与心得…"></textarea>
     <div class="field-label">待优化事项</div>
-    <textarea id="rp_opt" rows="2" style="width:100%;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:6px;padding:7px;font-size:11.5px" placeholder="需要改进的地方…"></textarea>
-    <button class="btn-add" style="margin-top:5px" onclick="saveReview()">保存复盘</button>
+    <textarea id="rp_opt" rows="2" style="width:100%;background:var(--bg-card);border:1px solid var(--line-soft);border-radius:7px;padding:9px;font-size:13px" placeholder="需要改进的地方…"></textarea>
+    <button class="btn-add" style="margin-top:6px" onclick="saveReview()">保存复盘</button>
     <div id="reviewList"></div>
   </div>
 </div>
@@ -293,18 +310,16 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
 <!-- ===== 板块2 约妆专区 ===== -->
 <div class="panel pnl-makeup" id="pnl-makeup">
   <div class="panel-head"><span class="dot"></span><h2>线下约妆专属专区</h2><span class="tag">浅奶茶</span></div>
-
   <div class="filter-tabs" id="bookFilter">
     <span class="active" data-f="all" onclick="setBookFilter('all',this)">全部</span>
     <span data-f="pending" onclick="setBookFilter('pending',this)">待确认</span>
     <span data-f="done" onclick="setBookFilter('done',this)">已完成</span>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">📅</span>约妆预约日程<span class="add" onclick="toggleAdd('bookForm')">+ 新增</span></div>
     <div id="bookList"></div>
     <div id="bookForm" style="display:none" class="multi-input">
-      <div class="mi"><input id="bk_date" type="datetime-local" style="font-size:11px"></div>
+      <div class="mi"><input id="bk_date" type="datetime-local"></div>
       <div class="mi"><input id="bk_place" placeholder="地点"></div>
       <div class="mi"><input id="bk_style" placeholder="妆容款式"></div>
       <div class="mi"><textarea id="bk_note" placeholder="客户备注…" rows="2"></textarea></div>
@@ -314,7 +329,6 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
       </div>
     </div>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">💄</span>约妆素材收纳<span class="add" onclick="document.getElementById('mkUpload').click()">+ 上传</span></div>
     <input type="file" id="mkUpload" accept="image/*" multiple style="display:none" onchange="uploadImg(event,'makeup')">
@@ -326,7 +340,6 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
 <!-- ===== 板块3 自媒体灵感库 ===== -->
 <div class="panel pnl-inspo" id="pnl-inspo">
   <div class="panel-head"><span class="dot"></span><h2>美妆自媒体灵感库</h2><span class="tag">浅裸粉</span></div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">💡</span>妆教选题灵感<span class="add" onclick="showAdd('topic')">+ 新增</span></div>
     <div id="topicList"></div>
@@ -335,13 +348,11 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
       <button class="btn-add" onclick="addItem('topic')">添加</button>
     </div>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">📷</span>妆容参考相册<span class="add" onclick="document.getElementById('inspoUpload').click()">+ 上传</span></div>
     <input type="file" id="inspoUpload" accept="image/*" multiple style="display:none" onchange="uploadImg(event,'inspo')">
     <div class="gallery" id="inspoGallery"></div>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">🎬</span>短视频脚本 / 标题文案<span class="add" onclick="showAdd('script')">+ 新增</span></div>
     <div id="scriptList"></div>
@@ -350,7 +361,6 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
       <button class="btn-add" onclick="addItem('script')">添加</button>
     </div>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">🔥</span>爆款思路 & 发布排期<span class="add" onclick="showAdd('hot')">+ 新增</span></div>
     <div id="hotList"></div>
@@ -364,7 +374,6 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
 <!-- ===== 板块4 滴胶手作 ===== -->
 <div class="panel pnl-craft" id="pnl-craft">
   <div class="panel-head"><span class="dot"></span><h2>滴胶手作灵感专区</h2><span class="tag">浅薄荷绿</span></div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">🌸</span>花材搭配灵感<span class="add" onclick="showAdd('flower')">+ 新增</span></div>
     <div id="flowerList"></div>
@@ -373,7 +382,6 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
       <button class="btn-add" onclick="addItem('flower')">添加</button>
     </div>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">💍</span>戒指系列 & 配色方案<span class="add" onclick="showAdd('ring')">+ 新增</span></div>
     <div id="ringList"></div>
@@ -382,13 +390,11 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
       <button class="btn-add" onclick="addItem('ring')">添加</button>
     </div>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">🖼</span>成品参考图库<span class="add" onclick="document.getElementById('craftUpload').click()">+ 上传</span></div>
     <input type="file" id="craftUpload" accept="image/*" multiple style="display:none" onchange="uploadImg(event,'craft')">
     <div class="gallery" id="craftGallery"></div>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">📖</span>花语素材 & 宣传文案<span class="add" onclick="showAdd('copy')">+ 新增</span></div>
     <div id="copyList"></div>
@@ -397,7 +403,6 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
       <button class="btn-add" onclick="addItem('copy')">添加</button>
     </div>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">🏷</span>新品上新 & 库存记录<span class="add" onclick="showAdd('stock')">+ 新增</span></div>
     <div id="stockList"></div>
@@ -411,79 +416,70 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
 <!-- ===== 板块5 营收账本 ===== -->
 <div class="panel pnl-ledger" id="pnl-ledger">
   <div class="panel-head"><span class="dot"></span><h2>分类营收账本</h2><span class="tag">浅卡其</span></div>
-
   <div class="month-pick">
-    <span style="font-size:11px;color:var(--ink-soft)">统计月份</span>
+    <span style="font-size:13px;color:var(--ink-soft)">统计月份</span>
     <input type="month" id="ledgerMonth" onchange="renderLedger()">
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">💄</span>① 线下约妆收入台账</div>
     <div class="ledger-row">
       <input id="ld1_date" type="date"><input id="ld1_note" placeholder="备注"><input id="ld1_amt" type="number" placeholder="金额" inputmode="decimal">
     </div>
-    <button class="btn-add" style="margin-top:5px;width:100%" onclick="addLedger('makeup')">+ 记一笔</button>
+    <button class="btn-add" style="margin-top:6px;width:100%" onclick="addLedger('makeup')">+ 记一笔</button>
     <div class="ledger-table" id="ld1_table"></div>
     <div class="ledger-sum" id="ld1_sum"></div>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">📱</span>② 自媒体账号变现收入</div>
     <div class="ledger-row">
       <input id="ld2_date" type="date"><input id="ld2_note" placeholder="备注"><input id="ld2_amt" type="number" placeholder="金额" inputmode="decimal">
     </div>
-    <button class="btn-add" style="margin-top:5px;width:100%" onclick="addLedger('media')">+ 记一笔</button>
+    <button class="btn-add" style="margin-top:6px;width:100%" onclick="addLedger('media')">+ 记一笔</button>
     <div class="ledger-table" id="ld2_table"></div>
     <div class="ledger-sum" id="ld2_sum"></div>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">💍</span>③ 滴胶手作店铺售卖收入</div>
     <div class="ledger-row">
       <input id="ld3_date" type="date"><input id="ld3_note" placeholder="备注"><input id="ld3_amt" type="number" placeholder="金额" inputmode="decimal">
     </div>
-    <button class="btn-add" style="margin-top:5px;width:100%" onclick="addLedger('craft')">+ 记一笔</button>
+    <button class="btn-add" style="margin-top:6px;width:100%" onclick="addLedger('craft')">+ 记一笔</button>
     <div class="ledger-table" id="ld3_table"></div>
     <div class="ledger-sum" id="ld3_sum"></div>
   </div>
-
-  <div class="ledger-sum" style="background:rgba(155,171,142,0.15);font-size:12px" id="ldTotal"></div>
+  <div class="ledger-sum" style="background:rgba(155,171,142,0.15);font-size:14px" id="ldTotal"></div>
 </div>
 
 <!-- ===== 板块6 采购清单 ===== -->
 <div class="panel pnl-buy" id="pnl-buy">
   <div class="panel-head"><span class="dot"></span><h2>采购购买清单</h2><span class="tag">浅燕麦</span></div>
-
   <div class="filter-tabs" id="buyFilter">
     <span class="active" data-f="all" onclick="setBuyFilter('all',this)">全部</span>
     <span data-f="todo" onclick="setBuyFilter('todo',this)">待采购</span>
     <span data-f="done" onclick="setBuyFilter('done',this)">已采购</span>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">💄</span>美妆耗材</div>
     <div class="multi-input">
-      <div class="mi"><input id="buy1_name" placeholder="化妆刷 / 彩妆 / 一次性用品…"><input id="buy1_budget" type="number" placeholder="预算" style="max-width:65px" inputmode="decimal"></div>
+      <div class="mi"><input id="buy1_name" placeholder="化妆刷 / 彩妆 / 一次性用品…"><input id="buy1_budget" type="number" placeholder="预算" style="max-width:70px" inputmode="decimal"></div>
     </div>
-    <button class="btn-add" style="margin-top:5px" onclick="addBuy('makeup')">添加</button>
+    <button class="btn-add" style="margin-top:6px" onclick="addBuy('makeup')">添加</button>
     <div id="buy1List"></div>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">🌼</span>滴胶手作原材料</div>
     <div class="multi-input">
-      <div class="mi"><input id="buy2_name" placeholder="树脂 / 干花 / 戒托 / 色精 / 模具…"><input id="buy2_budget" type="number" placeholder="预算" style="max-width:65px" inputmode="decimal"></div>
+      <div class="mi"><input id="buy2_name" placeholder="树脂 / 干花 / 戒托 / 色精 / 模具…"><input id="buy2_budget" type="number" placeholder="预算" style="max-width:70px" inputmode="decimal"></div>
     </div>
-    <button class="btn-add" style="margin-top:5px" onclick="addBuy('craft')">添加</button>
+    <button class="btn-add" style="margin-top:6px" onclick="addBuy('craft')">添加</button>
     <div id="buy2List"></div>
   </div>
-
   <div class="sub sub-tog">
     <div class="sub-title"><span class="ico">🎥</span>直播设备 & 拍摄道具</div>
     <div class="multi-input">
-      <div class="mi"><input id="buy3_name" placeholder="补光灯 / 支架 / 道具…"><input id="buy3_budget" type="number" placeholder="预算" style="max-width:65px" inputmode="decimal"></div>
+      <div class="mi"><input id="buy3_name" placeholder="补光灯 / 支架 / 道具…"><input id="buy3_budget" type="number" placeholder="预算" style="max-width:70px" inputmode="decimal"></div>
     </div>
-    <button class="btn-add" style="margin-top:5px" onclick="addBuy('equip')">添加</button>
+    <button class="btn-add" style="margin-top:6px" onclick="addBuy('equip')">添加</button>
     <div id="buy3List"></div>
   </div>
 </div>
@@ -507,9 +503,9 @@ select{background:var(--bg-card)!important;border:1px solid var(--line-soft)!imp
 <div id="viewer" onclick="this.classList.remove('show')"><span class="close-v">×</span><img id="viewerImg" src=""></div>
 
 <script>
-// ===== 数据层 =====
-const STORE_KEY='creator_desk_v1';
+const STORE_KEY='creator_desk_v2';
 let DB={
+  weight:[],weightRewards:{stage1:false,stage2:false},
   todo:[],live:[],review:[],
   book:[],makeupImg:[],
   topic:[],inspoImg:[],script:[],hot:[],
@@ -521,11 +517,11 @@ let DB={
 function load(){
   try{
     const s=localStorage.getItem(STORE_KEY);
-    if(s){const d=JSON.parse(s);DB=Object.assign(DB,d);DB.ledger=Object.assign({makeup:[],media:[],craft:[]},DB.ledger||{});DB.buy=Object.assign({makeup:[],craft:[],equip:[]},DB.buy||{})}
+    if(s){const d=JSON.parse(s);DB=Object.assign(DB,d);DB.ledger=Object.assign({makeup:[],media:[],craft:[]},DB.ledger||{});DB.buy=Object.assign({makeup:[],craft:[],equip:[]},DB.buy||{});DB.weightRewards=Object.assign({stage1:false,stage2:false},DB.weightRewards||{});DB.weight=DB.weight||[]}
   }catch(e){}
 }
 function save(){
-  try{localStorage.setItem(STORE_KEY,JSON.stringify(DB))}catch(e){if(e.name==='QuotaExceededError')toast('存储已满，请清理图片')}
+  try{localStorage.setItem(STORE_KEY,JSON.stringify(DB))}catch(e){if(e.name==='QuotaExceededError')toast('存储已满')}
 }
 function ts(){return Date.now()}
 function fmtDate(t){const d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
@@ -534,6 +530,7 @@ function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 
 // ===== 面板切换 =====
 const panelMap={
+  'pnl-weight': {title:'⚖️ 体重记录 & 减重打卡', bg:'var(--c-weight)'},
   'pnl-plan':   {title:'📋 每日工作总规划',   bg:'var(--c-plan)'},
   'pnl-makeup': {title:'💄 线下约妆专属专区', bg:'var(--c-makeup)'},
   'pnl-inspo':  {title:'📱 美妆自媒体灵感库', bg:'var(--c-inspo)'},
@@ -542,7 +539,7 @@ const panelMap={
   'pnl-buy':    {title:'🛒 采购购买清单',     bg:'var(--c-buy)'},
   'pnl-memo':   {title:'✨ 临时碎灵感备忘录', bg:'var(--c-memo)'},
 };
-let currentPanel='pnl-plan';
+let currentPanel='pnl-weight';
 let allCollapsed=false;
 
 function switchPanel(pid){
@@ -550,16 +547,10 @@ function switchPanel(pid){
   document.getElementById(currentPanel).classList.remove('active');
   document.getElementById(pid).classList.add('active');
   currentPanel=pid;
-  // 更新顶栏标题
-  const info=panelMap[pid];
-  document.getElementById('pnlTitle').innerHTML=info.title;
-  // 同步左侧高亮
+  document.getElementById('pnlTitle').innerHTML=panelMap[pid].title;
   document.querySelectorAll('#sideNav .sn').forEach(a=>a.classList.toggle('active',a.dataset.panel===pid));
-  // 滚动到顶部
   document.getElementById('mainArea').scrollTop=0;
 }
-
-// 全局收起/展开
 function toggleAllSubs(){
   allCollapsed=!allCollapsed;
   const panel=document.getElementById(currentPanel);
@@ -568,11 +559,104 @@ function toggleAllSubs(){
   document.getElementById('toggleAll').textContent=allCollapsed?'展开':'收起';
 }
 
-// ===== UI 辅助 =====
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),1600)}
 function showAdd(key){const f=document.getElementById('add'+key.charAt(0).toUpperCase()+key.slice(1));if(f)f.style.display=f.style.display==='none'?'flex':'none';if(f&&f.style.display!=='none')f.querySelector('textarea,input')?.focus()}
 function toggleAdd(id){const f=document.getElementById(id);f.style.display=f.style.display==='none'?'block':'none'}
 function viewImg(src){document.getElementById('viewerImg').src=src;document.getElementById('viewer').classList.add('show')}
+
+// ===== 体重记录 =====
+function addWeight(){
+  const date_v=document.getElementById('wt_date').value;
+  const val=parseFloat(document.getElementById('wt_val').value);
+  if(!val||val<=0){toast('请输入体重');return}
+  if(!date_v){toast('请选择日期');return}
+  DB.weight.push({id:ts(),date:date_v,val,ct:ts()});
+  document.getElementById('wt_date').value='';
+  document.getElementById('wt_val').value='';
+  save();renderWeight();toast('体重已记录');
+}
+function delWeight(id){DB.weight=DB.weight.filter(x=>x.id!==id);save();renderWeight()}
+function claimReward(stage){
+  if(!DB.weightRewards['stage'+stage]){DB.weightRewards['stage'+stage]=true;save();renderWeight();toast('🎉 恭喜达成！奖励已领取！')}
+}
+
+function renderWeight(){
+  // 排序
+  DB.weight.sort((a,b)=>b.date.localeCompare(a.date));
+  const list=DB.weight;
+
+  // 起始体重（最早的记录）
+  let startWt=null;
+  if(list.length>0){
+    const sorted=list.slice().sort((a,b)=>a.date.localeCompare(b.date));
+    startWt=sorted[0].val;
+  }
+  const latestWt=list.length>0?list[0].val:null;
+  const lost=startWt&&latestWt?(startWt-latestWt).toFixed(1):null;
+
+  // 汇总区
+  const summary=document.getElementById('weightSummary');
+  summary.innerHTML=`
+    <div class="ws"><div class="ws-val">${latestWt||'—'} kg</div><div class="ws-label">当前体重</div></div>
+    <div class="ws"><div class="ws-val">${lost||'—'} kg</div><div class="ws-label">已减体重</div></div>
+  `;
+
+  // 历史表格
+  const table=document.getElementById('weightTable');
+  if(list.length===0){table.innerHTML='<div class="empty" style="padding:8px">暂无体重记录</div>'}
+  else{
+    // 逐条计算差值
+    const rows=[];
+    for(let i=0;i<list.length;i++){
+      const cur=list[i];
+      const prev=list[i+1]; // 上一条（更早的）
+      let delta='';
+      let dcls='';
+      if(prev){
+        const d=(cur.val-prev.val).toFixed(1);
+        if(d>0){delta='+'+d;dcls='up'}
+        else if(d<0){delta=d;dcls='down'}
+        else{delta='0';dcls=''}
+      }
+      rows.push(`<div class="wr">
+        <span>${cur.date}</span>
+        <span style="font-weight:600;color:var(--ink)">${cur.val} kg</span>
+        <span class="w-delta ${dcls}">${delta||'—'}</span>
+        <span class="w-del" onclick="delWeight(${cur.id})">×</span>
+      </div>`);
+    }
+    table.innerHTML=rows.join('');
+  }
+
+  // 奖励卡片
+  const reward=document.getElementById('rewardSection');
+  const s1kg=5; // 10斤=5kg
+  const s2kg=10; // 20斤=10kg
+  const lostNum=parseFloat(lost)||0;
+  const s1Reached=lostNum>=s1kg;
+  const s2Reached=lostNum>=s2kg;
+  const s1Claimed=DB.weightRewards.stage1;
+  const s2Claimed=DB.weightRewards.stage2;
+
+  reward.innerHTML=`
+    <div class="reward-card ${s1Reached?'reached':''}">
+      <div class="rw-icon">🎁</div>
+      <div class="rw-title">第一阶段</div>
+      <div class="rw-target">减重 10 斤</div>
+      <div class="rw-reward">奖励：达成奖励 ✨</div>
+      <div class="rw-progress">已减 ${lostNum.toFixed(1)}kg / 5kg${s1Reached?' ✅':''}</div>
+      ${s1Reached&&!s1Claimed?`<span class="rw-claim" onclick="claimReward(1)">🎉 领取奖励</span>`:s1Claimed?`<span class="rw-claim claimed">✓ 已领取</span>`:''}
+    </div>
+    <div class="reward-card ${s2Reached?'reached':''}">
+      <div class="rw-icon">🛍️</div>
+      <div class="rw-title">终极目标</div>
+      <div class="rw-target">减重 20 斤</div>
+      <div class="rw-reward">奖励：买新衣服 👗</div>
+      <div class="rw-progress">已减 ${lostNum.toFixed(1)}kg / 10kg${s2Reached?' ✅':''}</div>
+      ${s2Reached&&!s2Claimed?`<span class="rw-claim" onclick="claimReward(2)">🎉 领取奖励</span>`:s2Claimed?`<span class="rw-claim claimed">✓ 已领取</span>`:''}
+    </div>
+  `;
+}
 
 // ===== 通用条目 =====
 function addItem(key){
@@ -637,7 +721,7 @@ function renderLive(){
       <div class="it-body"><b>🎬 ${esc(l.topic)}</b></div>
       ${l.time?`<div class="it-meta"><span>⏰ ${l.time.replace('T',' ')}</span></div>`:''}
       ${l.goal?`<div class="it-meta"><span>🎯 目标：${esc(l.goal)}</span></div>`:''}
-      ${l.script?`<div class="note-line" style="margin-top:5px">📝 ${esc(l.script)}</div>`:''}
+      ${l.script?`<div class="note-line" style="margin-top:6px">📝 ${esc(l.script)}</div>`:''}
       <div class="it-actions"><button class="del" onclick="delLive(${l.id})">删除</button></div>
     </div>`).join('');
 }
@@ -659,9 +743,9 @@ function renderReview(){
   el.innerHTML=DB.review.map(r=>`
     <div class="item">
       <div class="it-meta"><span>📅 ${r.date}</span></div>
-      ${r.problem?`<div class="note-line" style="margin-top:5px;border-left-color:#d4a09a"><b>问题</b><br>${esc(r.problem)}</div>`:''}
-      ${r.gain?`<div class="note-line" style="margin-top:5px;border-left-color:#9bab8e"><b>收获</b><br>${esc(r.gain)}</div>`:''}
-      ${r.opt?`<div class="note-line" style="margin-top:5px;border-left-color:#d4a373"><b>待优化</b><br>${esc(r.opt)}</div>`:''}
+      ${r.problem?`<div class="note-line" style="margin-top:6px;border-left-color:#d4a09a"><b>问题</b><br>${esc(r.problem)}</div>`:''}
+      ${r.gain?`<div class="note-line" style="margin-top:6px;border-left-color:#9bab8e"><b>收获</b><br>${esc(r.gain)}</div>`:''}
+      ${r.opt?`<div class="note-line" style="margin-top:6px;border-left-color:#d4a373"><b>待优化</b><br>${esc(r.opt)}</div>`:''}
       <div class="it-actions"><button class="del" onclick="delReview(${r.id})">删除</button></div>
     </div>`).join('');
 }
@@ -695,11 +779,11 @@ function renderBook(){
           <b>${b.style?esc(b.style):'妆容预约'}</b>
           ${b.date?`<div class="it-meta"><span>⏰ ${b.date.replace('T',' ')}</span></div>`:''}
           ${b.place?`<div class="it-meta"><span>📍 ${esc(b.place)}</span></div>`:''}
-          ${b.note?`<div class="note-line" style="margin-top:5px">${esc(b.note)}</div>`:''}
+          ${b.note?`<div class="note-line" style="margin-top:6px">${esc(b.note)}</div>`:''}
         </div>
       </div>
       <div class="it-actions">
-        <button style="font-size:10.5px;padding:2px 8px;border-radius:8px;cursor:pointer;${b.status==='done'?'background:rgba(127,163,134,0.2);color:#5e7d65':'background:rgba(212,160,154,0.2);color:#b07a74'}" onclick="toggleBookStatus(${b.id})">${b.status==='done'?'已完成':'待确认'}</button>
+        <button style="font-size:12px;padding:3px 10px;border-radius:9px;cursor:pointer;${b.status==='done'?'background:rgba(127,163,134,0.2);color:#5e7d65':'background:rgba(212,160,154,0.2);color:#b07a74'}" onclick="toggleBookStatus(${b.id})">${b.status==='done'?'已完成':'待确认'}</button>
         <button class="del" onclick="delBook(${b.id})">删除</button>
       </div>
     </div>`).join('');
@@ -750,7 +834,7 @@ function renderGallery(){
         <img src="${p.src}" onclick="viewImg('${p.src}')">
         <div class="del-ph" onclick="event.stopPropagation();delImg('${key}',${p.id})">×</div>
       </div>`).join('');
-    html+=`<div class="ph add-ph" onclick="document.getElementById('${galleryInputMap[key]}').click()"><span style="font-size:18px">+</span><span>上传</span></div>`;
+    html+=`<div class="ph add-ph" onclick="document.getElementById('${galleryInputMap[key]}').click()"><span style="font-size:20px">+</span><span>上传</span></div>`;
     el.innerHTML=html;
   });
 }
@@ -784,10 +868,10 @@ function renderLedger(){
     list=list.slice().sort((a,b)=>b.date.localeCompare(a.date));
     let sum=0;list.forEach(x=>sum+=x.amt);total+=sum;
     if(list.length===0){el.innerHTML='<div class="empty" style="padding:6px">暂无记录</div>'}
-    else{el.innerHTML=list.map(x=>`<div class="lr"><span>${x.date.slice(5)}</span><span style="font-size:11px;color:var(--ink-soft)">${esc(x.note||'—')}</span><span style="color:var(--accent);font-weight:600">¥${x.amt}</span><span class="lr-del" onclick="delLedger('${cat}',${x.id})">×</span></div>`).join('')}
+    else{el.innerHTML=list.map(x=>`<div class="lr"><span>${x.date.slice(5)}</span><span style="font-size:12px;color:var(--ink-soft)">${esc(x.note||'—')}</span><span style="color:var(--accent);font-weight:600">¥${x.amt}</span><span class="lr-del" onclick="delLedger('${cat}',${x.id})">×</span></div>`).join('')}
     sumEl.innerHTML=`<span>${ledgerNames[cat]}月度小计</span><b>¥${sum.toFixed(2)}</b>`;
   });
-  document.getElementById('ldTotal').innerHTML=`<span style="font-weight:600">本月总收入</span><b style="font-size:15px">¥${total.toFixed(2)}</b>`;
+  document.getElementById('ldTotal').innerHTML=`<span style="font-weight:600">本月总收入</span><b style="font-size:16px">¥${total.toFixed(2)}</b>`;
 }
 
 // ===== 采购清单 =====
@@ -861,6 +945,8 @@ function importData(event){
       DB=Object.assign(DB,d);
       DB.ledger=Object.assign({makeup:[],media:[],craft:[]},DB.ledger||{});
       DB.buy=Object.assign({makeup:[],craft:[],equip:[]},DB.buy||{});
+      DB.weightRewards=Object.assign({stage1:false,stage2:false},DB.weightRewards||{});
+      DB.weight=DB.weight||[];
       save();renderAll();toast('导入成功');
     }catch(err){toast('导入失败：格式错误')}
   };
@@ -869,7 +955,7 @@ function importData(event){
 }
 
 function renderAll(){
-  renderItems();renderLive();renderReview();renderBook();renderGallery();renderLedger();renderBuy();renderMemo();
+  renderWeight();renderItems();renderLive();renderReview();renderBook();renderGallery();renderLedger();renderBuy();renderMemo();
 }
 
 // ===== 初始化 =====
@@ -878,12 +964,10 @@ function init(){
   const wk=['日','一','二','三','四','五','六'];
   document.getElementById('sideDate').textContent=`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} 周${wk[now.getDay()]}`;
   document.getElementById('ledgerMonth').value=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  document.getElementById('wt_date').value=fmtDateInput(ts());
   const today=fmtDateInput(ts());
   ['ld1_date','ld2_date','ld3_date'].forEach(i=>{const el=document.getElementById(i);if(el)el.value=today});
-
   load();renderAll();
-
-  // 侧栏点击切换
   document.querySelectorAll('#sideNav .sn').forEach(a=>{
     a.addEventListener('click',()=>switchPanel(a.dataset.panel));
   });
